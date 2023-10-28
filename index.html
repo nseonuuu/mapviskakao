@@ -120,7 +120,30 @@ function geocodeAddress(address, callback) {
 			   }
 // CSV 파일 데이터를 로드하고 표시
 loadAndPlotData();
-	 
+
+// Generate the HTML table from the parsed data
+var html = '<table class="dataframe">';
+html += '<thead><tr>';
+results.meta.fields.forEach(field => {
+    html += '<th>' + field + '</th>';
+});
+html += '</tr></thead>';
+
+html += '<tbody>';
+results.data.forEach(row => {
+    html += '<tr>';
+    results.meta.fields.forEach(field => {
+        html += '<td>' + row[field] + '</td>';
+    }); 
+    html += '</tr>';
+});
+html += '</tbody>';
+html += '</table>';
+
+// Insert the generated table into the webpage
+document.getElementById("dataframe-container").innerHTML = html;
+
+                	    
     </script>
 
 </body>
