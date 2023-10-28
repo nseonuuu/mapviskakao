@@ -65,13 +65,12 @@ function loadAndPlotData() {
             results.data.forEach(row => {
                 if (row['관련 지역'] && row['신고 인원']) {
                     let address = row['관련 지역'];
-		    // '등' 제거
-        	    address = address.replace(/\s*등\s*$/, '');  
-        
-	            // "서울" 추가
-        	    address = "서울 " + address;
+                    // '등' 제거
+                    address = address.replace(/\s*등\s*$/, '');  
+                    // "서울" 추가
+                    address = "서울 " + address;
 
-		    const population = parseInt(row['신고 인원'], 10);
+                    const population = parseInt(row['신고 인원'], 10);
 
                     geocodeAddress(address, function (location) {
                         const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
@@ -130,17 +129,16 @@ function loadAndPlotData() {
 function geocodeAddress(address, callback) {
     var geocoder = new kakao.maps.services.Geocoder();
     geocoder.addressSearch(address, function (result, status) {
- 	   // 정상적으로 검색이 완료됐으면 
-    	 if (status === kakao.maps.services.Status.OK) {
-	        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-      	// 결과값으로 받은 위치를 마커로 표시합니다
-	        var marker = new kakao.maps.Marker({
-            		map: map,
-            		position: coords
-        	});
-	 }
-    })
+        // 정상적으로 검색이 완료됐으면 
+        if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            callback(coords); // 좌표 반환
+        } else {
+            console.error('Failed to get coordinates for address:', address);
+        }
+    });
 }
+
 // CSV 파일 데이터를 로드하고 표시
 loadAndPlotData();
 
