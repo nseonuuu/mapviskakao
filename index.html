@@ -119,7 +119,8 @@ function loadAndPlotData() {
 		
 		// Insert the generated table into the webpage
 		document.getElementById("dataframe-container").innerHTML = html;
-		
+
+	})
         .catch(error => {
             console.error('Error loading or parsing the CSV:', error);
         });
