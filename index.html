@@ -36,7 +36,7 @@
       var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
       var options = { //지도를 생성할 때 필요한 기본 옵션
 	            center: new kakao.maps.LatLng(37.5642135, 127.0016985), //지도의 중심좌표.
-	            level: 10 //지도의 레벨(확대, 축소 정도)
+	            level: 7 //지도의 레벨(확대, 축소 정도)
 
       };
 
@@ -47,12 +47,71 @@
 
       function setCenter() {           
 	  // 이동할 위도 경도 위치를 생성합니다 
-	  var moveLatLon = new kakao.maps.LatLng(33.452613, 126.570888);
+	  var moveLatLon = new kakao.maps.LatLng(37.5642135, 127.0016985);
     
           // 지도 중심을 이동 시킵니다
    	  map.setCenter(moveLatLon);
       }
 
+        // CSV 파일을 읽어오고 데이터를 처리하는 함수
+        function loadAndPlotData() {
+            fetch('RT_SU_Update.csv')
+                .then(response => response.text())
+                .then(data => {
+                    const results = Papa.parse(data, {
+                        header: true,
+                        skipEmptyLines: true
+                    });
+
+                    results.data.forEach(row => {
+                        if (row['관련 지역'] && row['신고 인원']) {
+                            const address = row['관련 지역'];
+                            const population = parseInt(row['신고 인원'], 10);
+
+                            geocodeAddress(address, function (location) {
+                                const radius = Math.sqrt(population) * 10;
+
+                                // 원형 마커 생성
+                                var circle = new kakao.maps.Circle({
+                                    center: new kakao.maps.LatLng(location.y, location.x),
+                                    radius: radius,
+                                    strokeWeight: 2,
+                                    strokeColor: '#FF0000',
+                                    strokeOpacity: 0.1,
+                                    fillColor: '#FF0000',
+                                    fillOpacity: 0.05,
+                                    map: map
+                                });
+
+                                // 마커 생성
+                                var marker = new kakao.maps.Marker({
+                                    position: new kakao.maps.LatLng(location.y, location.x),
+                                    map: map,
+                                    title: address
+                                });
+                            });
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading or parsing the CSV:', error);
+                });
+        }
+
+        // 주소를 좌표로 변환하는 함수
+        function geocodeAddress(address, callback) {
+            var geocoder = new kakao.maps.services.Geocoder();
+            geocoder.addressSearch(address, function (result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    callback(result[0].location);
+                } else {
+                    console.error('Geocoding failed:', status);
+                }
+            });
+        }
+
+        // CSV 파일 데이터를 로드하고 표시
+        loadAndPlotData();
     </script>
 
 </body>
