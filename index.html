@@ -72,6 +72,13 @@ function loadAndPlotData() {
 
                     const population = parseInt(row['신고 인원'], 10);
 
+		        // Check if population is a valid number
+		        if (isNaN(population)) {
+		            console.warn('Invalid population value for address:', address);
+		            return;  // Skip the current iteration
+		        }
+
+			
                     geocodeAddress(address, function (location) {
                         const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
 
