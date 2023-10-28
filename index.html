@@ -52,65 +52,43 @@
    	  map.setCenter(moveLatLon);
       }
 
-        // CSV 파일을 읽어오고 데이터를 처리하는 함수
-        function loadAndPlotData() {
-            fetch('RT_SU_Update.csv')
-                .then(response => response.text())
-                .then(data => {
-                    const results = Papa.parse(data, {
-                        header: true,
-                        skipEmptyLines: true
-                    });
-
-                    results.data.forEach(row => {
-                        if (row['관련 지역'] && row['신고 인원']) {
-                            const address = row['관련 지역'];
-                            const population = parseInt(row['신고 인원'], 10);
-
-                            geocodeAddress(address, function (location) {
-                                const radius = Math.sqrt(population) * 10;
-
-                                // 원형 마커 생성
-                                var circle = new kakao.maps.Circle({
-                                    center: new kakao.maps.LatLng(location.y, location.x),
-                                    radius: radius,
-                                    strokeWeight: 2,
-                                    strokeColor: '#FF0000',
-                                    strokeOpacity: 0.1,
-                                    fillColor: '#FF0000',
-                                    fillOpacity: 0.05,
-                                    map: map
-                                });
-
-                                // 마커 생성
-                                var marker = new kakao.maps.Marker({
-                                    position: new kakao.maps.LatLng(location.y, location.x),
-                                    map: map,
-                                    title: address
-                                });
+        // CSV에서 데이터를 가져와 지도에 마커와 선을 그리는 함수
+function displayMarkersAndLinesFromCSV() {
+    Papa.parse('RT_SU_Update.csv', {
+        download: true,
+        header: true,
+        complete: function(results) {
+            results.data.forEach(function(row) {
+                var areas = row['관련 지역'].split('/'); // '/'로 구분된 장소를 분리
+                var prevLatLng = null;
+                areas.forEach(function(area) {
+                    // 장소의 좌표를 얻기
+                    new kakao.maps.services.Geocoder().addressSearch(area, function(result, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            var latLng = new kakao.maps.LatLng(result[0].y, result[0].x);
+                            // 마커 추가
+                            new kakao.maps.Marker({
+                                map: map,
+                                position: latLng
                             });
+                            // 이전 장소와 현재 장소를 연결하는 선을 그리기
+                            if (prevLatLng) {
+                                new kakao.maps.Polyline({
+                                    map: map,
+                                    path: [prevLatLng, latLng]
+                                });
+                            }
+                            prevLatLng = latLng;
                         }
                     });
-                })
-                .catch(error => {
-                    console.error('Error loading or parsing the CSV:', error);
                 });
-        }
-
-        // 주소를 좌표로 변환하는 함수
-        function geocodeAddress(address, callback) {
-            var geocoder = new kakao.maps.services.Geocoder();
-            geocoder.addressSearch(address, function (result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    callback(result[0].location);
-                } else {
-                    console.error('Geocoding failed:', status);
-                }
             });
         }
+    });
+}
 
-        // CSV 파일 데이터를 로드하고 표시
-        loadAndPlotData();
+// CSV 파일에서 데이터를 불러와 지도에 마커와 선을 그리기
+displayMarkersAndLinesFromCSV();
     </script>
 
 </body>
