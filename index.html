@@ -141,6 +141,10 @@ function geocodeAddress(address, callback) {
         if (status === kakao.maps.services.Status.OK) {
             var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
             callback(coords); // 좌표 반환
+
+	    // 로그를 출력하여 location 객체의 값을 확인합니다.
+            console.log("Address:", address, "Coordinates:", coords);
+		
         } else {
             console.error('Failed to get coordinates for address:', address);
         }
