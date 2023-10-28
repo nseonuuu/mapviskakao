@@ -81,8 +81,21 @@ function loadAndPlotData() {
 			
                     geocodeAddress(address, function (location) {
 			console.log("Returned location:", location);
-                        const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
+			// 유효한 좌표인지 확인
+                        if (!location || isNaN(location.y) || isNaN(location.x)) {
+                            console.error('Invalid coordinates for address:', address);
+                            return;  // Skip the current iteration
+                        }
 
+			    
+                        const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
+			    // 반지름 값이 NaN인 경우 원형 마커 생성을 스킵
+				if (isNaN(radius)) {
+				    console.error('Invalid radius value for address:', address);
+				    return;  // Skip the current iteration
+				}
+
+			    
                         // 원형 마커 생성
                         var circle = new kakao.maps.Circle({
                             center: new kakao.maps.LatLng(location.y, location.x),
