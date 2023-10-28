@@ -65,7 +65,13 @@ function loadAndPlotData() {
             results.data.forEach(row => {
                 if (row['관련 지역'] && row['신고 인원']) {
                     const address = row['관련 지역'];
-                    const population = parseInt(row['신고 인원'], 10);
+		    // '등' 제거
+        	    address = address.replace(/\s*등\s*$/, '');  
+        
+	            // "서울" 추가
+        	    address = "서울 " + address;
+
+		    const population = parseInt(row['신고 인원'], 10);
 
                     geocodeAddress(address, function (location) {
                         const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
@@ -109,10 +115,12 @@ function geocodeAddress(address, callback) {
             		map: map,
             		position: coords
         	});
-		 
+	 }
+    }
+			   }
 // CSV 파일 데이터를 로드하고 표시
 loadAndPlotData();
-
+	 
     </script>
 
 </body>
