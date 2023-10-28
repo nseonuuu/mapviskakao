@@ -80,6 +80,7 @@ function loadAndPlotData() {
 
 			
                     geocodeAddress(address, function (location) {
+			console.log("Returned location:", location);
                         const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
 
                         // 원형 마커 생성
