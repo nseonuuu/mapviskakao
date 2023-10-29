@@ -72,12 +72,12 @@
         }
         
         #map {
-            flex: 8; /* This will make the map take up 80% of the container's width */
+            flex: 7; /* This will make the map take up 7/9 of the container's width */
             border-right: 1px solid #ccc; /* Optional: Adds a border between the map and the buttons */
         }
         
         #city-buttons, #city-buttons2 {
-            flex: 1;  /* 10% of the container's width for each button column */
+            flex: 1;  /* 1/9 of the container's width for each button column */
             display: flex;
             flex-direction: column;
             justify-content: space-between;  /* Distributes the buttons evenly */
