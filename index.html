@@ -82,7 +82,7 @@ function loadAndPlotData() {
                     geocodeAddress(address, function (location) {
 			console.log("Returned location:", location);
 			// 유효한 좌표인지 확인
-                        if (!location || isNaN(location.y) || isNaN(location.x)) {
+                        if (!location || isNaN(location.Ma) || isNaN(location.La)) {
                             console.error('Invalid coordinates for address:', address);
                             return;  // Skip the current iteration
                         }
@@ -98,7 +98,7 @@ function loadAndPlotData() {
 			    
                         // 원형 마커 생성
                         var circle = new kakao.maps.Circle({
-                            center: new kakao.maps.LatLng(location.y, location.x),
+                            center: new kakao.maps.LatLng(location.Ma, location.La),
                             radius: radius,
                             strokeWeight: 2,
                             strokeColor: '#FF0000',
