@@ -102,15 +102,15 @@ function loadAndPlotData() {
                             radius: radius,
                             strokeWeight: 2,
                             strokeColor: '#FF0000',
-                            strokeOpacity: 0.8,
+                            strokeOpacity: 0.3,
                             fillColor: '#FF0000',
-                            fillOpacity: 0.5,
+                            fillOpacity: 0.2,
                             map: map
                         });
 
                         // 마커 생성
                         var marker = new kakao.maps.Marker({
-                            position: new kakao.maps.LatLng(location.y, location.x),
+                            position: new kakao.maps.LatLng(location.Ma, location.La),
                             map: map,
                             title: address
                         });
