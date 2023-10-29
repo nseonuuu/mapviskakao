@@ -69,7 +69,6 @@
 
         #city-section {
             display: flex;
-            height: 100vh; /* Adjust this based on your requirements */
         }
         
         #map {
