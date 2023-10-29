@@ -54,6 +54,19 @@
 
 // CSV 파일을 읽어오고 데이터를 처리하는 함수
 function loadAndPlotData() {
+	// Initialize the MarkerClusterer	
+	var clusterer = new kakao.maps.MarkerClusterer({
+	    map: map,
+	    averageCenter: true,
+	    minLevel: 10
+	});
+	
+	// An array to store the markers
+	var markers = [];
+
+
+
+    // Fetch the CSV data
     fetch('RT_SU_Update.csv')
         .then(response => response.text())
         .then(data => {
@@ -78,7 +91,7 @@ function loadAndPlotData() {
 		            return;  // Skip the current iteration
 		        }
 
-			
+		    // Retrieve the geocoded address
                     geocodeAddress(address, function (location) {
 			console.log("Returned location:", location);
 			// 유효한 좌표인지 확인
@@ -87,13 +100,22 @@ function loadAndPlotData() {
                             return;  // Skip the current iteration
                         }
 
+		    // Create a marker for the geocoded address
+		    var marker = new kakao.maps.Marker({
+		        position: new kakao.maps.LatLng(location.Ma, location.La),
+		        map: map
+			title: address
+		    });
+		
+		    // Add the marker to the markers array
+		    markers.push(marker);
 			    
                         const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
 			    // 반지름 값이 NaN인 경우 원형 마커 생성을 스킵
-				if (isNaN(radius)) {
-				    console.error('Invalid radius value for address:', address);
-				    return;  // Skip the current iteration
-				}
+			if (isNaN(radius)) {
+			    console.error('Invalid radius value for address:', address);
+			    return;  // Skip the current iteration
+			}
 
 			    
                         // 원형 마커 생성
@@ -106,13 +128,6 @@ function loadAndPlotData() {
                             fillColor: '#FF0000',
                             fillOpacity: 0.05,
                             map: map
-                        });
-
-                        // 마커 생성
-                        var marker = new kakao.maps.Marker({
-                            position: new kakao.maps.LatLng(location.Ma, location.La),
-                            map: map,
-                            title: address
                         });
                     });
                 }
