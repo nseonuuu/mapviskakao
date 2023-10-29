@@ -199,20 +199,10 @@ function placesSearchCB(data, status, pagination) {
         // 검색된 장소 위치를 첫번째로 맵 중심을 이동합니다.
         map.setCenter(new kakao.maps.LatLng(data[0].y, data[0].x));
 
-        // 파란색 마커를 생성하고 지도에 표시합니다.
+        // 마커를 생성하고 지도에 표시합니다.
         var marker = new kakao.maps.Marker({
             map: map,
-            position: new kakao.maps.LatLng(data[0].y, data[0].x),
-            image: new kakao.maps.MarkerImage(
-                'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-                new kakao.maps.Size(64, 69),
-                {
-                    offset: new kakao.maps.Point(27, 69),
-                    alt: '검색 결과',
-                    spriteOrigin: new kakao.maps.Point(0, 0),
-                    spriteSize: new kakao.maps.Size(36, 691)
-                }
-            )
+            position: new kakao.maps.LatLng(data[0].y, data[0].x)
         });
 
         infowindow.setContent('<div style="padding:5px;font-size:12px;">' + data[0].place_name + '</div>');
@@ -222,6 +212,7 @@ function placesSearchCB(data, status, pagination) {
         return;
     }
 }
+
 
 
                 	    
