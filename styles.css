@@ -76,18 +76,19 @@
             border-right: 1px solid #ccc; /* Optional: Adds a border between the map and the buttons */
         }
         
-        #city-buttons {
-            flex: 1; /* Each button section will take up 10% of the container's width */
-            padding: 10px; /* Some spacing around the buttons */
-            box-sizing: border-box; /* Ensure padding doesn't expand the div beyond its flex size */
+        #city-buttons, #city-buttons2 {
+            flex: 1;  /* 10% of the container's width for each button column */
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: space-between;  /* Distributes the buttons evenly */
+            align-items: stretch;  /* Stretches the buttons to fit the container's width */
+            padding: 10px;
+            box-sizing: border-box;  /* Ensures padding doesn't expand the div beyond its flex size */
         }
         
-        #city-buttons button {
-            width: 100%; /* Button takes the full width of its container */
-            height: calc(100% / 9 - 10px); /* Divides the container height by 9 (number of buttons) and adjusts for any potential gaps */
-            margin-bottom: 10px; /* Space between buttons */
+        #city-buttons button, #city-buttons2 button {
+            width: 100%;  /* Full width of the container */
+            height: calc(100% / 9 - 10px);  /* Divides the height by the number of buttons, adjusting for gaps */
+            margin-bottom: 10px;
         }
 
