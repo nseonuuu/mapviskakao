@@ -23,22 +23,27 @@
             margin: 2rem auto;
             padding: 0 2rem;
         }
+
         #controls {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            gap: 10px;  /* 컨트롤 간의 간격 */
+            gap: 10px;
+            padding: 10px;  /* Same as #pac-input */
+            height: 40px;   /* Same intrinsic height as #pac-input */
+            width: 100px;
         }
         
         #pac-input {
             width: 400px;
+            height: 40px;   /* Explicit height */
             padding: 10px;
             margin: 2rem 0 10px 0;
             display: block;
             border-radius: 3px;
             border: 1px solid #ccc;
         }
-        
+
             
         #map {
             width: 100%;
