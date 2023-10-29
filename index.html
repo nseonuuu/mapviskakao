@@ -23,7 +23,8 @@
         </div>
         <div id="map"></div>
         <p>
-    	    <button onclick="setCenter()">처음으로</button> 
+    	    <button onclick="setCenter()">처음으로</button>
+	    <button onclick="searchPlaces()">검색</button>
 	</p>
         <div id="dataframe-container"></div>
     </main>
@@ -52,6 +53,18 @@
    	  map.setCenter(moveLatLon);
       }
 
+function searchPlaces() {
+    var keyword = document.getElementById('pac-input').value;
+    if (!keyword.replace(/^\s+|\s+$/g, '')) {
+        alert('키워드를 입력해주세요!');
+        return false;
+    }
+
+    ps.keywordSearch(keyword, placesSearchCB); 
+}
+
+
+	    
 // CSV 파일을 읽어오고 데이터를 처리하는 함수
 function loadAndPlotData() {
     fetch('RT_SU_Update.csv')
