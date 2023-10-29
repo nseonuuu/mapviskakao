@@ -21,7 +21,34 @@
         <div id="controls">
             <input id="pac-input" type="text" placeholder="위치 검색">
         </div>
-        <div id="map"></div>
+	<div id="city-section">
+	    <div id="map"></div>
+	    <div id="city-buttons">
+	        <button onclick="loadCityData('서울')">서울</button><br>
+	        <button onclick="loadCityData('부산')">부산</button><br>
+	        <button onclick="loadCityData('대구')">대구</button><br>
+	        <button onclick="loadCityData('인천')">인천</button><br>
+	        <button onclick="loadCityData('광주')">광주</button><br>
+	        <button onclick="loadCityData('대전')">대전</button><br>
+	        <button onclick="loadCityData('세종')">세종</button><br>
+	        <button onclick="loadCityData('울산')">울산</button><br>
+	        <button onclick="loadCityData('경남')">경남</button><br>
+	    </div>
+	    <div id="city-buttons">
+	        <button onclick="loadCityData('경북')">경북</button><br>
+	        <button onclick="loadCityData('경기남부')">경기남부</button><br>
+	        <button onclick="loadCityData('경기북부')">경기북부</button><br>
+	        <button onclick="loadCityData('강원')">강원</button><br>
+	        <button onclick="loadCityData('충북')">충북</button><br>
+	        <button onclick="loadCityData('충남')">충남</button><br>
+	        <button onclick="loadCityData('전남')">전남</button><br>
+	        <button onclick="loadCityData('전북')">전북</button><br>
+	        <button onclick="loadCityData('제주')">제주</button><br>
+	    </div>
+	</div>
+
+	</div>
+
         <p>
     	    <button onclick="setCenter()">처음으로</button> 
 	</p>
@@ -52,43 +79,65 @@
    	  map.setCenter(moveLatLon);
       }
 
+// Arrays to hold markers and circles
+var markers = [];
+var circles = [];
+
+function clearMap() {
+    // Clear markers
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+
+    // Clear circles
+    for (var i = 0; i < circles.length; i++) {
+        circles[i].setMap(null);
+    }
+    circles = [];
+    
+    // Clear the dataframe
+    document.getElementById("dataframe-container").innerHTML = "";
+}	    
+	    
+	    
 // CSV 파일을 읽어오고 데이터를 처리하는 함수
 function loadAndPlotData() {
     fetch('RT_SU_Update.csv')
-        .then(response => response.text())
-        .then(data => {
-            const results = Papa.parse(data, {
-                header: true,
-                skipEmptyLines: true
-            });
+	.then(response => response.text())
+	.then(data => {
+	    const results = Papa.parse(data, {
+		header: true,
+		skipEmptyLines: true
+	    });
 
-            results.data.forEach(row => {
-                if (row['관련 지역'] && row['신고 인원']) {
-                    let address = row['관련 지역'];
-                    // '등' 제거
-                    address = address.replace(/\s*등\s*$/, '');  
-                    // "서울" 추가
-                    address = "서울 " + address;
+	    results.data.forEach(row => {
+		if (row['관련 지역'] && row['신고 인원']) {
+		    let address = row['관련 지역'];
+		    // '등' 제거
+		    address = address.replace(/\s*등\s*$/, '');  
+		    // "서울" 추가
+		    address = "서울 " + address;
 
-                    const population = parseInt(row['신고 인원'], 10);
+		    const population = parseInt(row['신고 인원'], 10);
 
-		        // Check if population is a valid number
-		        if (isNaN(population)) {
-		            console.warn('Invalid population value for address:', address);
-		            return;  // Skip the current iteration
-		        }
+			// Check if population is a valid number
+			if (isNaN(population)) {
+			    console.warn('Invalid population value for address:', address);
+			    return;  // Skip the current iteration
+			}
 
 			
-                    geocodeAddress(address, function (location) {
+		    geocodeAddress(address, function (location) {
 			console.log("Returned location:", location);
 			// 유효한 좌표인지 확인
-                        if (!location || isNaN(location.Ma) || isNaN(location.La)) {
-                            console.error('Invalid coordinates for address:', address);
-                            return;  // Skip the current iteration
-                        }
+			if (!location || isNaN(location.Ma) || isNaN(location.La)) {
+			    console.error('Invalid coordinates for address:', address);
+			    return;  // Skip the current iteration
+			}
 
 			    
-                        const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
+			const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
 			    // 반지름 값이 NaN인 경우 원형 마커 생성을 스킵
 				if (isNaN(radius)) {
 				    console.error('Invalid radius value for address:', address);
@@ -96,27 +145,29 @@ function loadAndPlotData() {
 				}
 
 			    
-                        // 원형 마커 생성
-                        var circle = new kakao.maps.Circle({
-                            center: new kakao.maps.LatLng(location.Ma, location.La),
-                            radius: radius,
-                            strokeWeight: 2,
-                            strokeColor: '#FF0000',
-                            strokeOpacity: 0.5,
-                            fillColor: '#FF0000',
-                            fillOpacity: 0.05,
-                            map: map
-                        });
+			// 원형 마커 생성
+			var circle = new kakao.maps.Circle({
+			    center: new kakao.maps.LatLng(location.Ma, location.La),
+			    radius: radius,
+			    strokeWeight: 2,
+			    strokeColor: '#FF0000',
+			    strokeOpacity: 0.5,
+			    fillColor: '#FF0000',
+			    fillOpacity: 0.05,
+			    map: map
+			});
+			circles.push(circle);
 
-                        // 마커 생성
-                        var marker = new kakao.maps.Marker({
-                            position: new kakao.maps.LatLng(location.Ma, location.La),
-                            map: map,
-                            title: address
-                        });
-                    });
-                }
-            });
+			// 마커 생성
+			var marker = new kakao.maps.Marker({
+			    position: new kakao.maps.LatLng(location.Ma, location.La),
+			    map: map,
+			    title: address
+			});
+			markers.push(marker);
+		    });
+		}
+	    });
 
 		// Generate the HTML table from the parsed data
 		var html = '<table class="dataframe">';
@@ -130,7 +181,7 @@ function loadAndPlotData() {
 		results.data.forEach(row => {
 		    html += '<tr>';
 		    results.meta.fields.forEach(field => {
-		        html += '<td>' + row[field] + '</td>';
+			html += '<td>' + row[field] + '</td>';
 		    }); 
 		    html += '</tr>';
 		});
@@ -141,32 +192,69 @@ function loadAndPlotData() {
 		document.getElementById("dataframe-container").innerHTML = html;
 
 	})
-        .catch(error => {
-            console.error('Error loading or parsing the CSV:', error);
-        });
+	.catch(error => {
+	    console.error('Error loading or parsing the CSV:', error);
+	});
 }
-
+	
 // 주소를 좌표로 변환하는 함수
 function geocodeAddress(address, callback) {
     var geocoder = new kakao.maps.services.Geocoder();
     geocoder.addressSearch(address, function (result, status) {
-        // 정상적으로 검색이 완료됐으면 
-        if (status === kakao.maps.services.Status.OK) {
-            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-            callback(coords); // 좌표 반환
+	// 정상적으로 검색이 완료됐으면 
+	if (status === kakao.maps.services.Status.OK) {
+	    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	    callback(coords); // 좌표 반환
 
 	    // 로그를 출력하여 location 객체의 값을 확인합니다.
-            console.log("Address:", address, "Coordinates:", coords);
+	    console.log("Address:", address, "Coordinates:", coords);
 		
-        } else {
-            console.error('Failed to get coordinates for address:', address);
-        }
+	} else {
+	    console.error('Failed to get coordinates for address:', address);
+	}
     });
 }
 
 // CSV 파일 데이터를 로드하고 표시
 loadAndPlotData();
 
+// Mapping of city names to their codes
+const cityCodeMapping = {
+    "서울": "SU",
+    "부산": "PS",
+    "대구": "DG",
+    "인천": "IC",
+    "광주": "KJ",
+    "대전": "DJ",
+    "울산": "WS",
+    "세종": "SJ",
+    "경기남부": "KN",
+    "경기북부": "KB",
+    "강원": "KW",
+    "충북": "CB",
+    "충남": "CN",
+    "전북": "JB",
+    "전남": "JN",
+    "경북": "SB",
+    "경남": "SN",
+    "제주": "JJ"
+};
+
+function loadCityData(city) {
+    clearMap();
+
+    // Check if the city code exists in the mapping
+    if (cityCodeMapping[city]) {
+        const filename = `RT_${cityCodeMapping[city]}_Update.csv`;
+        loadAndPlotData(filename);
+    } else {
+        console.log("Data for", city, "is not yet implemented or the city is not recognized.");
+    }
+}
+
+
+
+		    
 // 장소 검색 객체를 생성합니다.
 var ps = new kakao.maps.services.Places();
 
