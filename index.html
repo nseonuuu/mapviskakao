@@ -62,7 +62,7 @@
       var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
       var options = { //지도를 생성할 때 필요한 기본 옵션
 	            center: new kakao.maps.LatLng(37.55093, 126.99117), //지도의 중심좌표.
-	            level: 7 //지도의 레벨(확대, 축소 정도)
+	            level: 3 //지도의 레벨(확대, 축소 정도)
 
       };
 
@@ -102,22 +102,24 @@ function clearMap() {
 	    
 	    
 // CSV 파일을 읽어오고 데이터를 처리하는 함수
-function loadAndPlotData() {
-    fetch('RT_SU_Update.csv')
-	.then(response => response.text())
-	.then(data => {
-	    const results = Papa.parse(data, {
-		header: true,
-		skipEmptyLines: true
-	    });
+function loadAndPlotData(cityName) {
+    // Derive the filename from the city name
+    const filename = `RT_${cityCodeMapping[cityName]}_Update.csv`;
+	
+    fetch(filename)
+        .then(response => response.text())
+        .then(data => {
+            const results = Papa.parse(data, {
+                header: true,
+                skipEmptyLines: true
+            });
 
-	    results.data.forEach(row => {
-		if (row['관련 지역'] && row['신고 인원']) {
-		    let address = row['관련 지역'];
-		    // '등' 제거
-		    address = address.replace(/\s*등\s*$/, '');  
-		    // "서울" 추가
-		    address = "서울 " + address;
+            results.data.forEach(row => {
+                if (row['관련 지역'] && row['신고 인원']) {
+                    let address = row['관련 지역'];
+                    address = address.replace(/\s*등\s*$/, '');  
+                    address = cityName + " " + address;  // Use the passed city name here
+
 
 		    const population = parseInt(row['신고 인원'], 10);
 
@@ -196,7 +198,7 @@ function loadAndPlotData() {
 	    console.error('Error loading or parsing the CSV:', error);
 	});
 }
-	
+	    
 // 주소를 좌표로 변환하는 함수
 function geocodeAddress(address, callback) {
     var geocoder = new kakao.maps.services.Geocoder();
@@ -215,8 +217,7 @@ function geocodeAddress(address, callback) {
     });
 }
 
-// CSV 파일 데이터를 로드하고 표시
-loadAndPlotData();
+
 
 // Mapping of city names to their codes
 const cityCodeMapping = {
@@ -240,13 +241,42 @@ const cityCodeMapping = {
     "제주": "JJ"
 };
 
+const cityCoordinates = {
+    "서울": { lat: 37.55191813, lng: 126.9918238, zoom: 7 },
+    "부산": { lat: 35.21033858, lng: 129.0691138, zoom: 7 },
+    "대구": { lat: 35.8298146, lng: 128.5653587, zoom: 7 },
+    "인천": { lat: 37.58457102, lng: 126.3755151, zoom: 7 },
+    "광주": { lat: 35.15572822, lng: 126.8354348, zoom: 7 },
+    "대전": { lat: 36.3397636, lng: 127.3940388, zoom: 7 },
+    "울산": { lat: 35.55422196, lng: 129.237579, zoom: 7 },
+    "세종": { lat: 36.56072897, lng: 127.258722, zoom: 7 },
+    "경기남부": { lat: 37.53434923, lng: 127.1810501, zoom: 5 },
+    "경기북부": { lat: 37.53434923, lng: 127.1810501, zoom: 5 },
+    "강원": { lat: 37.71904264, lng: 128.3008969, zoom: 7 },
+    "충북": { lat: 36.73877678, lng: 127.8313457, zoom: 7 },
+    "충남": { lat: 36.52940199, lng: 126.8497393, zoom: 7 },
+    "전북": { lat: 35.71581062, lng: 127.1427384, zoom: 7 },
+    "전남": { lat: 34.87817002, lng: 126.9052332, zoom: 7 },
+    "경북": { lat: 36.34862579, lng: 128.748716, zoom: 7 },
+    "경남": { lat: 35.32449891, lng: 128.2611748, zoom: 7 },
+    "제주": { lat: 33.38699923, lng: 126.5538395, zoom: 7 }
+};
+
+	    
 function loadCityData(city) {
     clearMap();
 
+    // Set map center and zoom based on the city
+    if (cityCoordinates[city]) {
+        const cityData = cityCoordinates[city];
+        map.setCenter(new kakao.maps.LatLng(cityData.lat, cityData.lng));
+        map.setLevel(cityData.zoom);
+    }
+
+	
     // Check if the city code exists in the mapping
     if (cityCodeMapping[city]) {
-        const filename = `RT_${cityCodeMapping[city]}_Update.csv`;
-        loadAndPlotData(filename);
+        loadAndPlotData(city);  // Pass the city name here
     } else {
         console.log("Data for", city, "is not yet implemented or the city is not recognized.");
     }
