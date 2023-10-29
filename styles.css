@@ -35,6 +35,7 @@
         #homeButton {
             width: 80px;
             height: 40px;
+            padding: 10px;
         }
         
         #pac-input {
