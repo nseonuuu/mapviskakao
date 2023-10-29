@@ -23,8 +23,7 @@
         </div>
         <div id="map"></div>
         <p>
-    	    <button onclick="setCenter()">처음으로</button>
-	    <button onclick="searchPlaces()">검색</button>
+    	    <button onclick="setCenter()">처음으로</button> 
 	</p>
         <div id="dataframe-container"></div>
     </main>
@@ -53,18 +52,6 @@
    	  map.setCenter(moveLatLon);
       }
 
-function searchPlaces() {
-    var keyword = document.getElementById('pac-input').value;
-    if (!keyword.replace(/^\s+|\s+$/g, '')) {
-        alert('키워드를 입력해주세요!');
-        return false;
-    }
-
-    ps.keywordSearch(keyword, placesSearchCB); 
-}
-
-
-	    
 // CSV 파일을 읽어오고 데이터를 처리하는 함수
 function loadAndPlotData() {
     fetch('RT_SU_Update.csv')
@@ -180,6 +167,61 @@ function geocodeAddress(address, callback) {
 // CSV 파일 데이터를 로드하고 표시
 loadAndPlotData();
 
+// 장소 검색 객체를 생성합니다.
+var ps = new kakao.maps.services.Places();
+
+// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다.
+var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+// 검색창에 키 입력 시 검색 결과를 표시하는 이벤트 리스너를 추가합니다.
+document.getElementById('pac-input').addEventListener('keydown', function (e) {
+    if (e.keyCode === 13) { // Enter 키
+        searchPlaces();
+    }
+});
+
+// 키워드로 장소를 검색합니다.
+function searchPlaces() {
+    var keyword = document.getElementById('pac-input').value;
+
+    if (!keyword.replace(/^\s+|\s+$/g, '')) {
+        alert('키워드를 입력해주세요!');
+        return false;
+    }
+
+    // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다.
+    ps.keywordSearch(keyword, placesSearchCB);
+}
+
+// 키워드 검색 완료 시 호출되는 콜백함수 입니다.
+function placesSearchCB(data, status, pagination) {
+    if (status === kakao.maps.services.Status.OK) {
+        // 검색된 장소 위치를 첫번째로 맵 중심을 이동합니다.
+        map.setCenter(new kakao.maps.LatLng(data[0].y, data[0].x));
+
+        // 파란색 마커를 생성하고 지도에 표시합니다.
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(data[0].y, data[0].x),
+            image: new kakao.maps.MarkerImage(
+                'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+                new kakao.maps.Size(64, 69),
+                {
+                    offset: new kakao.maps.Point(27, 69),
+                    alt: '검색 결과',
+                    spriteOrigin: new kakao.maps.Point(0, 0),
+                    spriteSize: new kakao.maps.Size(36, 691)
+                }
+            )
+        });
+
+        infowindow.setContent('<div style="padding:5px;font-size:12px;">' + data[0].place_name + '</div>');
+        infowindow.open(map, marker);
+    } else {
+        alert('검색 결과가 존재하지 않습니다.');
+        return;
+    }
+}
 
 
                 	    
