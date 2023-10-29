@@ -67,3 +67,18 @@
             text-align: center;
         }
 
+        #city-section {
+            display: flex;
+            height: 100vh; /* Adjust this based on your requirements */
+        }
+        
+        #map {
+            flex: 3; /* This will make the map take up 60% of the container's width */
+            border-right: 1px solid #ccc; /* Optional: Adds a border between the map and the buttons */
+        }
+        
+        #city-buttons {
+            flex: 1; /* Each button section will take up 20% of the container's width */
+            padding: 10px; /* Some spacing around the buttons */
+            box-sizing: border-box; /* Ensure padding doesn't expand the div beyond its flex size */
+        }
