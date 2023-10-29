@@ -31,11 +31,13 @@
             gap: 10px;
             padding: 10px;  /* Same as #pac-input */
             height: 40px;   /* Same intrinsic height as #pac-input */
+            margin: 2rem 0 10px 0;
         }
         #homeButton {
             width: 80px;
             height: 40px;
             padding: 10px;
+            margin: 2rem 0 10px 0;
         }
         
         #pac-input {
