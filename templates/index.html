@@ -58,6 +58,8 @@
                 <input type="text" id="start_station" name="start_station"><br><br>
                 <label for="end_station">End Station:</label>
                 <input type="text" id="end_station" name="end_station"><br><br>
+                <label for="time"> Start Time:</label>
+                <input type="text" name="time" placeholder="Start time">
                 <input type="submit" value="Find Path">
             </form>
             <h2>Safe Path:</h2>
@@ -116,7 +118,7 @@ function clearMap() {
 // CSV 파일을 읽어오고 데이터를 처리하는 함수
 function loadAndPlotData(cityName) {
     // Derive the filename from the city name
-    const filename = `RT_${cityCodeMapping[cityName]}_Update.csv`;
+    const filename = `/static/RT_${cityCodeMapping[cityName]}_Update.csv`;
 	
     fetch(filename)
         .then(response => response.text())
