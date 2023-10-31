@@ -85,13 +85,20 @@ def find_stations_within_radius_updated(coordinates, radius, station_data):
 
 @app.route('/get_path', methods=['GET', 'POST'])
 def get_path():
-    start_station = request.args.get('start_station', '서울역_1호선')
-    end_station = request.args.get('end_station', '신촌_2호선')
-    time = request.args.get('time', '14:00')
+    if request.method == 'POST':
+        start_station = request.form.get('start_station', '서울역_1호선')
+        end_station = request.form.get('end_station', '신촌_2호선')
+        time = request.form.get('time', '14:00')
+    else:
+        start_station = request.args.get('start_station', '서울역_1호선')
+        end_station = request.args.get('end_station', '신촌_2호선')
+        time = request.args.get('time', '14:00')
     
-    result = get_path_based_on_time(start_station, end_station, time, protest_data)
-    
-    return result
+    try:
+        result = get_path_based_on_time(start_station, end_station, time, protest_data)
+        return {"result": result}
+    except Exception as e:
+        return {"error": str(e)}, 500
 
 
 
