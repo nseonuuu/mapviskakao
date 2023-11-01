@@ -10,6 +10,8 @@
     <title>RToday Checker</title>
     <link rel="stylesheet" href="/static/styles.css">
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a035643f71b9f10705041cf4f38eb95b&libraries=services,clusterer"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
   </head>
 
@@ -53,13 +55,13 @@
 	<!-- Safe Path Finder Section -->
         <section>
             <h1>Find Your Safe Path</h1> <label for="input_info">역사명_호선명 형식으로 입력해주세요. (예: 신촌_2호선)</label>
-            <form id="path-form">
+            <form id="path-form" action="/get_path" method="POST">
                 <label for="start_station">Start Station:</label>
                 <input type="text" id="start_station" name="start_station"><br><br>
                 <label for="end_station">End Station:</label>
                 <input type="text" id="end_station" name="end_station"><br><br>
                 <label for="time"> Start Time:</label>
-                <input type="text" name="time" placeholder="Start time">
+                <input type="text" id="time" name="time" placeholder="Start time">
                 <input type="submit" value="Find Path">
             </form>
             <h2>Safe Path:</h2>
@@ -354,17 +356,100 @@ function placesSearchCB(data, status, pagination) {
         return;
     }
 }
-            document.getElementById("path-form").addEventListener("submit", function(event){
-                event.preventDefault();
-                fetch('/get_path', {
-                    method: 'POST',
-                    body: new FormData(this)
-                }).then(response => response.json())
-                .then(data => {
-                    document.getElementById("result").innerText = data.result;
-                });
-            });
+$(document).ready(function() {
+    $("#path-form").submit(function(e) {
+        e.preventDefault(); // Prevent the form from submitting the traditional way
+        var start_station = $("#start_station").val();
+        var end_station = $("#end_station").val();
+        var time = $("input[name='time']").val();
 
+        // Send an AJAX request to get the path
+        $.ajax({
+            url: '/get_path',
+            type: 'POST',
+            data: {
+                start_station: start_station,
+                end_station: end_station,
+                time: time
+            },
+            success: function(response) {
+                if (response.result) {
+                    $("#result").text(response.result.join(" -> "));
+                } else {
+                    $("#result").text("Error finding path.");
+                }
+            },
+            error: function(error) {
+                console.log(error);
+                $("#result").text("Error finding path.");
+            }
+        });
+    });
+});
+document.getElementById('path-form').addEventListener('submit', function(event) {
+    event.preventDefault();  // 폼의 기본 제출 동작을 방지
+
+    var startStation = document.getElementById('start_station').value;
+    var endStation = document.getElementById('end_station').value;
+    var time = document.querySelector('input[name="time"]').value;
+
+    fetch('/get_path', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `start_station=${startStation}&end_station=${endStation}&time=${time}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.result) {
+            document.getElementById('result').textContent = data.result.join(' -> ');
+        } else if (data.error) {
+            document.getElementById('result').textContent = data.error;
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching path:', error);
+        document.getElementById('result').textContent = 'Error fetching path. Please try again.';
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {  // 페이지가 완전히 로드된 후에 코드 실행
+    document.getElementById("path-form").addEventListener("submit", function(event) {
+        event.preventDefault();  // 폼의 기본 제출 동작 방지
+
+        const startStation = document.getElementById("start_station").value;
+        const endStation = document.getElementById("end_station").value;
+        const time = document.querySelector("input[name='time']").value;
+
+        // POST 요청을 위한 데이터 생성
+        const formData = new URLSearchParams();
+        formData.append("start_station", startStation);
+        formData.append("end_station", endStation);
+        formData.append("time", time);
+
+        fetch("/get_path", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: formData.toString()
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result) {
+                document.getElementById("result").textContent = data.result.join(" -> ");
+            } else if (data.error) {
+                document.getElementById("result").textContent = data.error;
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching path:", error);
+            document.getElementById("result").textContent = "Error fetching path. Please try again.";
+        });
+    });
+});
 
                 	    
     </script>
