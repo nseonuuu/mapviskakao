@@ -21,6 +21,7 @@
         <div id="controls">
             <input id="pac-input" type="text" placeholder="위치 검색">
 	    <button id="homeButton" onclick="setCenter()">처음으로</button>
+            <button id="trafficButton" onclick="toggldTraffic()">교통정보 표시</button>
         </div>
 	<div id="city-section">
 	    <div id="map"></div>
@@ -49,22 +50,6 @@
 	</div>
 
         <div id="dataframe-container"></div>
-
-	<!-- Safe Path Finder Section -->
-        <section>
-            <h1>Find Your Safe Path</h1> <label for="input_info">역사명_호선명 형식으로 입력해주세요. (예: 신촌_2호선)</label>
-            <form id="path-form">
-                <label for="start_station">Start Station:</label>
-                <input type="text" id="start_station" name="start_station"><br><br>
-                <label for="end_station">End Station:</label>
-                <input type="text" id="end_station" name="end_station"><br><br>
-                <label for="time"> Start Time:</label>
-                <input type="text" name="time" placeholder="Start time">
-                <input type="submit" value="Find Path">
-            </form>
-            <h2>Safe Path:</h2>
-            <p id="result"></p>
-        </section>
 	    
     </main>
     <footer>
@@ -84,6 +69,18 @@
       // 지도에 교통정보를 표시하도록 지도타입을 추가합니다
       map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 
+
+        // 교통정보를 토글하는 함수입니다
+	function toggleTraffic() {
+	      // 교통정보가 현재 지도에 표시되고 있는지 확인합니다
+	      if (map.hasOverlayMapTypeId(trafficLayer)) {
+	          // 교통정보를 지도에서 제거합니다
+	          map.removeOverlayMapTypeId(trafficLayer);
+	      } else {
+	          // 교통정보를 지도에 표시합니다
+	          map.addOverlayMapTypeId(trafficLayer);
+	      }
+	  }
       function setCenter() {           
 	  // 이동할 위도 경도 위치를 생성합니다 
 	  var moveLatLon = new kakao.maps.LatLng(36.4295023415802, 128.067007021683);
@@ -96,7 +93,7 @@
 // Arrays to hold markers and circles
 var markers = [];
 var circles = [];
-
+	    
 function clearMap() {
     // Clear markers
     for (var i = 0; i < markers.length; i++) {
