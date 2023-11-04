@@ -72,16 +72,16 @@ var trafficLayerOn = false;
 
 // 지도에 교통정보를 표시하도록 지도타입을 추가합니다
 map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-trafficLayerOn = true; // 초기 상태는 교통정보가 표시되지 않도록 설정
+trafficLayerOn = true; // 초기 상태는 교통정보가 표시되도록 설정
 
 // 교통정보 표시를 토글하는 함수
 function toggleTraffic() {
     if (trafficLayerOn) {
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-        trafficLayerOn = true;
+        trafficLayerOn = false;
     } else {
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-        trafficLayerOn = false;
+        trafficLayerOn = true;
     }
 }
       function setCenter() {           
