@@ -66,22 +66,23 @@
 
       var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
-	  // 처음에 교통정보를 표시하기 위해 지도타입을 추가합니다
-	  var trafficLayer = kakao.maps.MapTypeId.TRAFFIC;
-	  map.addOverlayMapTypeId(trafficLayer);
+// 교통정보 표시 여부를 추적하는 변수
+var trafficLayerOn = false;
 
+// 지도에 교통정보를 표시하도록 지도타입을 추가합니다
+map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+trafficLayerOn = true; // 초기 상태는 교통정보가 표시되도록 설정
 
-        // 교통정보를 토글하는 함수입니다
-	function toggleTraffic() {
-	      // 교통정보가 현재 지도에 표시되고 있는지 확인합니다
-	      if (map.hasOverlayMapTypeId(trafficLayer)) {
-	          // 교통정보를 지도에서 제거합니다
-	          map.removeOverlayMapTypeId(trafficLayer);
-	      } else {
-	          // 교통정보를 지도에 표시합니다
-	          map.addOverlayMapTypeId(trafficLayer);
-	      }
-	  }
+// 교통정보 표시를 토글하는 함수
+function toggleTraffic() {
+    if (trafficLayerOn) {
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+        trafficLayerOn = false;
+    } else {
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+        trafficLayerOn = true;
+    }
+}
       function setCenter() {           
 	  // 이동할 위도 경도 위치를 생성합니다 
 	  var moveLatLon = new kakao.maps.LatLng(36.4295023415802, 128.067007021683);
