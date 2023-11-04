@@ -353,16 +353,6 @@ function placesSearchCB(data, status, pagination) {
         return;
     }
 }
-            document.getElementById("path-form").addEventListener("submit", function(event){
-                event.preventDefault();
-                fetch('/get_path', {
-                    method: 'POST',
-                    body: new FormData(this)
-                }).then(response => response.json())
-                .then(data => {
-                    document.getElementById("result").innerText = data.result;
-                });
-            });
 
 
                 	    
