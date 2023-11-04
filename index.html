@@ -66,8 +66,9 @@
 
       var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
-      // 지도에 교통정보를 표시하도록 지도타입을 추가합니다
-      map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+	  // 처음에 교통정보를 표시하기 위해 지도타입을 추가합니다
+	  var trafficLayer = new kakao.maps.MapTypeId.TRAFFIC;
+	  map.addOverlayMapTypeId(trafficLayer);
 
 
         // 교통정보를 토글하는 함수입니다
