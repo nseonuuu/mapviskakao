@@ -10,9 +10,7 @@
     <title>RToday Checker</title>
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a035643f71b9f10705041cf4f38eb95b&libraries=services,clusterer"></script>
-    <script src="/static/comments.js"></script>
-
-
+	
   </head>
 
 <body>
@@ -53,12 +51,14 @@
 	</div>
 	<p>제공된 마커와 원의 위치는 실제 진행 위치와 다소 다를 수 있습니다.</p>
         <div id="dataframe-container"></div>
-
-        <div id="comments">
-            <input id="comment-input" type="text" placeholder="댓글 입력">
-            <button id="commentButton">댓글 작성</button>
-        </div>
-        <div id="comment-container">
+	
+	    <div id="comments">
+	        <input id="comment-input" type="text" placeholder="댓글 입력">
+	        <button id="commentButton">댓글 작성</button>
+	    </div>
+	    <div id="comment-container">
+	        <!-- 여기에 서버로부터 로드된 댓글이 표시됩니다 -->
+	    </div>
 	    
     </main>
     <footer>
@@ -362,6 +362,7 @@ function placesSearchCB(data, status, pagination) {
         return;
     }
 }
+
 
 
                 	    
