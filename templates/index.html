@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RToday Checker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a035643f71b9f10705041cf4f38eb95b&libraries=services,clusterer"></script>
+    <script src="/static/comments.js"></script>
+
+
+  </head>
+
+<body>
+    <header>
+        <h1>오늘의 집회시위</h1>
+    </header>
+    <main>
+        <div id="controls">
+            <input id="pac-input" type="text" placeholder="위치 검색">
+	    <button id="homeButton" onclick="setCenter()">처음으로</button>
+            <button id="trafficButton" onclick="toggleTraffic()">교통정보 표시</button>
+	    <button id="clearButton" onclick="clearMap()">마커 지우기</button>
+        </div>
+	<div id="city-section">
+	    <div id="map"></div>
+	    <div id="city-buttons">
+	        <button onclick="loadCityData('서울')">서울</button><br>
+	        <button onclick="loadCityData('부산')">부산</button><br>
+	        <button onclick="loadCityData('대구')">대구</button><br>
+	        <button onclick="loadCityData('인천')">인천</button><br>
+	        <button onclick="loadCityData('광주')">광주</button><br>
+	        <button onclick="loadCityData('대전')">대전</button><br>
+	        <button onclick="loadCityData('세종')">세종</button><br>
+	        <button onclick="loadCityData('울산')">울산</button><br>
+	        <button onclick="loadCityData('경남')">경남</button><br>
+	    </div>
+	    <div id="city-buttons">
+	        <button onclick="loadCityData('경북')">경북</button><br>
+	        <button onclick="loadCityData('경기남부')">경기남부</button><br>
+	        <button onclick="loadCityData('경기북부')">경기북부</button><br>
+	        <button onclick="loadCityData('강원')">강원</button><br>
+	        <button onclick="loadCityData('충북')">충북</button><br>
+	        <button onclick="loadCityData('충남')">충남</button><br>
+	        <button onclick="loadCityData('전남')">전남</button><br>
+	        <button onclick="loadCityData('전북')">전북</button><br>
+	        <button onclick="loadCityData('제주')">제주</button><br>
+	    </div>
+	</div>
+	<p>제공된 마커와 원의 위치는 실제 진행 위치와 다소 다를 수 있습니다.</p>
+        <div id="dataframe-container"></div>
+
+        <div id="comments">
+            <input id="comment-input" type="text" placeholder="댓글 입력">
+            <button id="commentButton">댓글 작성</button>
+        </div>
+        <div id="comment-container">
+	    
+    </main>
+    <footer>
+        <p>&copy; Copyright 2023. Naro_cizipcommunity. All rights reserved.</p>
+    </footer>
+
+    <script>
+      var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+      var options = { //지도를 생성할 때 필요한 기본 옵션
+	            center: new kakao.maps.LatLng(36.4295023415802, 128.067007021683), //지도의 중심좌표.
+	            level: 13 //지도의 레벨(확대, 축소 정도)
+
+      };
+
+      var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+// 교통정보 표시 여부를 추적하는 변수
+var trafficLayerOn = false;
+
+// 지도에 교통정보를 표시하도록 지도타입을 추가합니다
+map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+trafficLayerOn = true; // 초기 상태는 교통정보가 표시되도록 설정
+
+// 교통정보 표시를 토글하는 함수
+function toggleTraffic() {
+    if (trafficLayerOn) {
+        map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+        trafficLayerOn = false;
+    } else {
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+        trafficLayerOn = true;
+    }
+}
+      function setCenter() {           
+	  // 이동할 위도 경도 위치를 생성합니다 
+	  var moveLatLon = new kakao.maps.LatLng(36.4295023415802, 128.067007021683);
+    
+          // 지도 중심을 이동 시킵니다
+   	  map.setCenter(moveLatLon);
+	  map.setLevel(13);
+      }
+
+// Arrays to hold markers and circles
+var markers = [];
+var circles = [];
+	    
+function clearMap() {
+    // Clear markers
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
+
+    // Clear circles
+    for (var i = 0; i < circles.length; i++) {
+        circles[i].setMap(null);
+    }
+    circles = [];
+    
+    // Clear the dataframe
+    document.getElementById("dataframe-container").innerHTML = "";
+}	    
+	    
+	    
+// CSV 파일을 읽어오고 데이터를 처리하는 함수
+function loadAndPlotData(cityName) {
+    // Derive the filename from the city name
+    const filename = `RT_${cityCodeMapping[cityName]}_Update.csv`;
+	
+    fetch(filename)
+        .then(response => response.text())
+        .then(data => {
+            const results = Papa.parse(data, {
+                header: true,
+                skipEmptyLines: true
+            });
+
+            results.data.forEach(row => {
+                if (row['관련 지역'] && row['신고 인원']) {
+                    let address = row['관련 지역'];
+                    address = address.replace(/\s*등\s*$/, '');  
+                    address = cityName + " " + address;  // Use the passed city name here
+
+
+		    const population = parseInt(row['신고 인원'], 10);
+
+			// Check if population is a valid number
+			if (isNaN(population)) {
+			    console.warn('Invalid population value for address:', address);
+			    return;  // Skip the current iteration
+			}
+
+			
+		    geocodeAddress(address, function (location) {
+			console.log("Returned location:", location);
+			// 유효한 좌표인지 확인
+			if (!location || isNaN(location.Ma) || isNaN(location.La)) {
+			    console.error('Invalid coordinates for address:', address);
+			    return;  // Skip the current iteration
+			}
+
+			    
+			const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
+			    // 반지름 값이 NaN인 경우 원형 마커 생성을 스킵
+				if (isNaN(radius)) {
+				    console.error('Invalid radius value for address:', address);
+				    return;  // Skip the current iteration
+				}
+
+			    
+			// 원형 마커 생성
+			var circle = new kakao.maps.Circle({
+			    center: new kakao.maps.LatLng(location.Ma, location.La),
+			    radius: radius,
+			    strokeWeight: 2,
+			    strokeColor: '#FF0000',
+			    strokeOpacity: 0.5,
+			    fillColor: '#FF0000',
+			    fillOpacity: 0.05,
+			    map: map
+			});
+			circles.push(circle);
+
+			// 마커 생성
+			var marker = new kakao.maps.Marker({
+			    position: new kakao.maps.LatLng(location.Ma, location.La),
+			    map: map,
+			    title: address
+			});
+			markers.push(marker);
+		    });
+		}
+	    });
+
+		// Generate the HTML table from the parsed data
+		var html = '<table class="dataframe">';
+		html += '<thead><tr>';
+		results.meta.fields.forEach(field => {
+		    html += '<th>' + field + '</th>';
+		});
+		html += '</tr></thead>';
+		
+		html += '<tbody>';
+		results.data.forEach(row => {
+		    html += '<tr>';
+		    results.meta.fields.forEach(field => {
+			html += '<td>' + row[field] + '</td>';
+		    }); 
+		    html += '</tr>';
+		});
+		html += '</tbody>';
+		html += '</table>';
+		
+		// Insert the generated table into the webpage
+		document.getElementById("dataframe-container").innerHTML = html;
+
+	})
+	.catch(error => {
+	    console.error('Error loading or parsing the CSV:', error);
+	});
+}
+	    
+// 주소를 좌표로 변환하는 함수
+function geocodeAddress(address, callback) {
+    var geocoder = new kakao.maps.services.Geocoder();
+    geocoder.addressSearch(address, function (result, status) {
+	// 정상적으로 검색이 완료됐으면 
+	if (status === kakao.maps.services.Status.OK) {
+	    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+	    callback(coords); // 좌표 반환
+
+	    // 로그를 출력하여 location 객체의 값을 확인합니다.
+	    console.log("Address:", address, "Coordinates:", coords);
+		
+	} else {
+	    console.error('Failed to get coordinates for address:', address);
+	}
+    });
+}
+
+
+
+// Mapping of city names to their codes
+const cityCodeMapping = {
+    "서울": "SU",
+    "부산": "PS",
+    "대구": "DG",
+    "인천": "IC",
+    "광주": "KJ",
+    "대전": "DJ",
+    "울산": "WS",
+    "세종": "SJ",
+    "경기남부": "KN",
+    "경기북부": "KB",
+    "강원": "KW",
+    "충북": "CB",
+    "충남": "CN",
+    "전북": "JB",
+    "전남": "JN",
+    "경북": "SB",
+    "경남": "SN",
+    "제주": "JJ"
+};
+
+const cityCoordinates = {
+    "서울": { lat: 37.55191813, lng: 126.9918238, zoom: 9 },
+    "부산": { lat: 35.21033858, lng: 129.0691138, zoom: 9 },
+    "대구": { lat: 35.8298146, lng: 128.5653587, zoom: 9 },
+    "인천": { lat: 37.58457102, lng: 126.3755151, zoom: 9 },
+    "광주": { lat: 35.15572822, lng: 126.8354348, zoom: 9 },
+    "대전": { lat: 36.3397636, lng: 127.3940388, zoom: 9 },
+    "울산": { lat: 35.55422196, lng: 129.237579, zoom: 9 },
+    "세종": { lat: 36.56072897, lng: 127.258722, zoom: 9 },
+    "경기남부": { lat: 37.53434923, lng: 127.1810501, zoom: 11 },
+    "경기북부": { lat: 37.53434923, lng: 127.1810501, zoom: 11 },
+    "강원": { lat: 37.71904264, lng: 128.3008969, zoom: 11 },
+    "충북": { lat: 36.73877678, lng: 127.8313457, zoom: 11 },
+    "충남": { lat: 36.52940199, lng: 126.8497393, zoom: 11 },
+    "전북": { lat: 35.71581062, lng: 127.1427384, zoom: 11 },
+    "전남": { lat: 34.87817002, lng: 126.9052332, zoom: 11 },
+    "경북": { lat: 36.34862579, lng: 128.748716, zoom: 11 },
+    "경남": { lat: 35.32449891, lng: 128.2611748, zoom: 11 },
+    "제주": { lat: 33.38699923, lng: 126.5538395, zoom: 10 }
+};
+
+	    
+function loadCityData(city) {
+    clearMap();
+
+    // Set map center and zoom based on the city
+    if (cityCoordinates[city]) {
+        const cityData = cityCoordinates[city];
+        map.setCenter(new kakao.maps.LatLng(cityData.lat, cityData.lng));
+        map.setLevel(cityData.zoom);
+    }
+
+	
+    // Check if the city code exists in the mapping
+    if (cityCodeMapping[city]) {
+        loadAndPlotData(city);  // Pass the city name here
+    } else {
+        console.log("Data for", city, "is not yet implemented or the city is not recognized.");
+    }
+}
+
+
+
+		    
+// 장소 검색 객체를 생성합니다.
+var ps = new kakao.maps.services.Places();
+
+// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다.
+var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+// 검색창에 키 입력 시 검색 결과를 표시하는 이벤트 리스너를 추가합니다.
+document.getElementById('pac-input').addEventListener('keydown', function (e) {
+    if (e.keyCode === 13) { // Enter 키
+        searchPlaces();
+    }
+});
+
+// 키워드로 장소를 검색합니다.
+function searchPlaces() {
+    var keyword = document.getElementById('pac-input').value;
+
+    if (!keyword.replace(/^\s+|\s+$/g, '')) {
+        alert('키워드를 입력해주세요!');
+        return false;
+    }
+
+    // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다.
+    ps.keywordSearch(keyword, placesSearchCB);
+}
+
+// 키워드 검색 완료 시 호출되는 콜백함수 입니다.
+function placesSearchCB(data, status, pagination) {
+    if (status === kakao.maps.services.Status.OK) {
+        // 검색된 장소 위치를 첫번째로 맵 중심을 이동합니다.
+        map.setCenter(new kakao.maps.LatLng(data[0].y, data[0].x));
+	    
+        // 원하는 마커 이미지의 URL
+        var imageUrl = 'exclamation.png';
+        var imageSize = new kakao.maps.Size(32, 34); // 마커 이미지의 크기
+        var imageOption = { offset: new kakao.maps.Point(16, 34) }; // 마커 이미지의 오프셋
+
+        // 마커 이미지를 생성합니다.
+        var markerImage = new kakao.maps.MarkerImage(imageUrl, imageSize, imageOption);
+
+        // 마커를 생성하고 지도에 표시합니다.
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(data[0].y, data[0].x),
+            image: markerImage // 마커 이미지를 설정합니다.
+        });
+
+
+        infowindow.setContent('<div style="padding:5px;font-size:12px;color:black;">' + data[0].place_name + '</div>');
+        infowindow.open(map, marker);
+    } else {
+        alert('검색 결과가 존재하지 않습니다.');
+        return;
+    }
+}
+
+
+                	    
+    </script>
+
+</body>
+
+</html>

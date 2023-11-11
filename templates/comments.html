@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>댓글 목록</title>
+</head>
+<body>
+    {% for comment in comments %}
+    <div class="comment">
+        <p>{{ comment.content }}</p>
+        <span>{{ comment.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+    </div>
+    {% endfor %}
+</body>
+</html>
