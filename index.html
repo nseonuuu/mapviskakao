@@ -359,7 +359,7 @@ var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
 // 검색창에 키 입력 시 검색 결과를 표시하는 이벤트 리스너를 추가합니다.
 document.addEventListener('DOMContentLoaded', function() {
-    ['section1', 'section2'].forEach(sectionId => {
+    ['Section1', 'Section2'].forEach(sectionId => {
         var inputField = document.querySelector('#' + sectionId + ' .pac-input');
         if (inputField) {
             inputField.addEventListener('keydown', function (e) {
