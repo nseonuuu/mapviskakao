@@ -174,10 +174,9 @@ function clearMap(sectionId) {
 	    
 	    
 // CSV 파일을 읽어오고 데이터를 처리하는 함수
-function loadAndPlotData(cityName, sectionId) {
+function loadAndPlotData(cityName, sectionId, map) {
     const filename = `RT_${cityCodeMapping[cityName]}_Update.csv`;
     var mapContainer = document.querySelector('#' + sectionId + ' .map');
-    var map = new kakao.maps.Map(mapContainer, options);
     var markers = []; // 섹션별 마커 관리
     var circles = []; // 섹션별 원 관리
 
@@ -335,7 +334,7 @@ function loadCityData(city, sectionId) {
 
     // Check if the city code exists in the mapping
     if (cityCodeMapping[city]) {
-        loadAndPlotData(city, sectionId);  // Pass the city name here
+        loadAndPlotData(city, sectionId, map);  // Pass the city name here
     } else {
         console.log("Data for", city, "is not yet implemented or the city is not recognized.");
     }
