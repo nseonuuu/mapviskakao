@@ -320,19 +320,20 @@ const cityCoordinates = {
 };
 
 	    
+var maps = {}; // 모든 지도 객체를 저장할 객체
+
 function loadCityData(city, sectionId) {
     clearMap(sectionId);
 
     const cityData = cityCoordinates[city];
     var mapContainer = document.querySelector('#' + sectionId + ' .map');
-    var map;
 
-    // 이미 생성된 지도가 있는지 확인
-    if (!mapContainer.dataset.mapObject) {
-        map = new kakao.maps.Map(mapContainer, options);
-        mapContainer.dataset.mapObject = map; // 지도 객체 저장
+    // 지도 객체가 이미 생성되었는지 확인
+    if (!maps[sectionId]) {
+        var map = new kakao.maps.Map(mapContainer, options);
+        maps[sectionId] = map; // 지도 객체 저장
     } else {
-        map = mapContainer.dataset.mapObject; // 이미 있는 지도 객체 재사용
+        var map = maps[sectionId]; // 이미 있는 지도 객체 재사용
     }
 
     map.setCenter(new kakao.maps.LatLng(cityData.lat, cityData.lng));
