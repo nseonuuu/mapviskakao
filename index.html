@@ -17,50 +17,100 @@
     <header>
         <h1>오늘의 집회시위</h1>
     </header>
-    <main>
-        <div id="controls">
-            <input id="pac-input" type="text" placeholder="위치 검색">
-	    <button id="homeButton" onclick="setCenter()">처음으로</button>
-            <button id="trafficButton" onclick="toggleTraffic()">교통정보 표시</button>
-	    <button id="clearButton" onclick="clearMap()">마커 지우기</button>
-        </div>
-	<div id="city-section">
-	    <div id="map"></div>
-	    <div id="city-buttons">
-	        <button onclick="loadCityData('서울')">서울</button><br>
-	        <button onclick="loadCityData('부산')">부산</button><br>
-	        <button onclick="loadCityData('대구')">대구</button><br>
-	        <button onclick="loadCityData('인천')">인천</button><br>
-	        <button onclick="loadCityData('광주')">광주</button><br>
-	        <button onclick="loadCityData('대전')">대전</button><br>
-	        <button onclick="loadCityData('세종')">세종</button><br>
-	        <button onclick="loadCityData('울산')">울산</button><br>
-	        <button onclick="loadCityData('경남')">경남</button><br>
+	<main>
+	    <!-- 탭 버튼들 -->
+	    <div class="tab">
+		<button class="tablinks" onclick="openMap(event, 'Map1')">지도 1</button>
+		<button class="tablinks" onclick="openMap(event, 'Map2')">지도 2</button>
 	    </div>
-	    <div id="city-buttons">
-	        <button onclick="loadCityData('경북')">경북</button><br>
-	        <button onclick="loadCityData('경기남부')">경기남부</button><br>
-	        <button onclick="loadCityData('경기북부')">경기북부</button><br>
-	        <button onclick="loadCityData('강원')">강원</button><br>
-	        <button onclick="loadCityData('충북')">충북</button><br>
-	        <button onclick="loadCityData('충남')">충남</button><br>
-	        <button onclick="loadCityData('전남')">전남</button><br>
-	        <button onclick="loadCityData('전북')">전북</button><br>
-	        <button onclick="loadCityData('제주')">제주</button><br>
-	    </div>
-	</div>
-	<p>제공된 마커와 원의 위치는 실제 진행 위치와 다소 다를 수 있습니다.</p>
-        <div id="dataframe-container"></div>
 	
+	    <!-- 지도 1 -->
+	    <div id="Map1" class="map-container">
+		<div id="controls">
+		    <input id="pac-input" type="text" placeholder="위치 검색">
+		    <button id="homeButton" onclick="setCenter()">처음으로</button>
+		    <button id="trafficButton" onclick="toggleTraffic()">교통정보 표시</button>
+		    <button id="clearButton" onclick="clearMap()">마커 지우기</button>
+		</div>
+		<div id="city-section">
+		    <div id="map"></div>
+		    <div id="city-buttons">
+			<button onclick="loadCityData('서울')">서울</button><br>
+			<button onclick="loadCityData('부산')">부산</button><br>
+			<button onclick="loadCityData('대구')">대구</button><br>
+			<button onclick="loadCityData('인천')">인천</button><br>
+			<button onclick="loadCityData('광주')">광주</button><br>
+			<button onclick="loadCityData('대전')">대전</button><br>
+			<button onclick="loadCityData('세종')">세종</button><br>
+			<button onclick="loadCityData('울산')">울산</button><br>
+			<button onclick="loadCityData('경남')">경남</button><br>
+		    </div>
+		    <div id="city-buttons">
+			<button onclick="loadCityData('경북')">경북</button><br>
+			<button onclick="loadCityData('경기남부')">경기남부</button><br>
+			<button onclick="loadCityData('경기북부')">경기북부</button><br>
+			<button onclick="loadCityData('강원')">강원</button><br>
+			<button onclick="loadCityData('충북')">충북</button><br>
+			<button onclick="loadCityData('충남')">충남</button><br>
+			<button onclick="loadCityData('전남')">전남</button><br>
+			<button onclick="loadCityData('전북')">전북</button><br>
+			<button onclick="loadCityData('제주')">제주</button><br>
+		</div>
+		<p>제공된 마커와 원의 위치는 실제 진행 위치와 다소 다를 수 있습니다.</p>
+		<div id="dataframe-container"></div>
+		<div id="comments">
+			<input id="comment-input" type="text" placeholder="댓글 입력">
+			<button id="commentButton">댓글 작성</button>
+		    </div>
+		    <div id="comment-container">
+			<!-- 여기에 서버로부터 로드된 댓글이 표시됩니다 -->
+		    </div>
+	    </div>
+	
+	    <!-- 지도 2 -->
+	    <div id="Map2" class="map-container">
+		<!-- 지도 2의 내용 -->
+		<div id="controls">
+		    <input id="pac-input" type="text" placeholder="위치 검색">
+		    <button id="homeButton" onclick="setCenter()">처음으로</button>
+		    <button id="trafficButton" onclick="toggleTraffic()">교통정보 표시</button>
+		    <button id="clearButton" onclick="clearMap()">마커 지우기</button>
+		</div>
+		<div id="city-section">
+		    <div id="map"></div>
+		    <div id="city-buttons">
+			<button onclick="loadCityData('서울')">서울</button><br>
+			<button onclick="loadCityData('부산')">부산</button><br>
+			<button onclick="loadCityData('대구')">대구</button><br>
+			<button onclick="loadCityData('인천')">인천</button><br>
+			<button onclick="loadCityData('광주')">광주</button><br>
+			<button onclick="loadCityData('대전')">대전</button><br>
+			<button onclick="loadCityData('세종')">세종</button><br>
+			<button onclick="loadCityData('울산')">울산</button><br>
+			<button onclick="loadCityData('경남')">경남</button><br>
+		    </div>
+		    <div id="city-buttons">
+			<button onclick="loadCityData('경북')">경북</button><br>
+			<button onclick="loadCityData('경기남부')">경기남부</button><br>
+			<button onclick="loadCityData('경기북부')">경기북부</button><br>
+			<button onclick="loadCityData('강원')">강원</button><br>
+			<button onclick="loadCityData('충북')">충북</button><br>
+			<button onclick="loadCityData('충남')">충남</button><br>
+			<button onclick="loadCityData('전남')">전남</button><br>
+			<button onclick="loadCityData('전북')">전북</button><br>
+			<button onclick="loadCityData('제주')">제주</button><br>
+		</div>
+		<p>제공된 마커와 원의 위치는 실제 진행 위치와 다소 다를 수 있습니다.</p>
+		<div id="dataframe-container"></div>
+	    </div>
 	    <div id="comments">
-	        <input id="comment-input" type="text" placeholder="댓글 입력">
-	        <button id="commentButton">댓글 작성</button>
+		<input id="comment-input" type="text" placeholder="댓글 입력">
+		<button id="commentButton">댓글 작성</button>
 	    </div>
 	    <div id="comment-container">
-	        <!-- 여기에 서버로부터 로드된 댓글이 표시됩니다 -->
+		<!-- 여기에 서버로부터 로드된 댓글이 표시됩니다 -->
 	    </div>
-	    
-    </main>
+	</main>
     <footer>
         <p>&copy; Copyright 2023. Naro_cizipcommunity. All rights reserved.</p>
     </footer>
@@ -363,7 +413,43 @@ function placesSearchCB(data, status, pagination) {
     }
 }
 
+    function openMap(evt, mapName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("map-container");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(mapName).style.display = "block";
+        evt.currentTarget.className += " active";
 
+        // 지도 초기화 코드는 여기에 추가합니다.
+	if (mapName === "Map1") {
+	    // 지도 1 초기화 코드
+	    var mapContainer = document.getElementById('Map1'), // 지도를 표시할 div
+	        mapOption = { 
+	            center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도의 중심좌표
+	            level: 3 // 지도의 확대 레벨
+	        };  
+	
+	    var map1 = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	} else if (mapName === "Map2") {
+	    // 지도 2 초기화 코드
+	    var mapContainer = document.getElementById('Map2'), // 지도를 표시할 div
+	        mapOption = { 
+	            center: new kakao.maps.LatLng(35.1796, 129.0756), // 지도의 중심좌표 (예: 부산)
+	            level: 3 // 지도의 확대 레벨
+	        };  
+	
+	    var map2 = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	}
+
+    }
+    // 기본적으로 첫 번째 탭을 활성화
+    document.getElementsByClassName("tablinks")[0].click();
 
                 	    
     </script>
