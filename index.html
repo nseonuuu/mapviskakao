@@ -143,13 +143,7 @@ function toggleTraffic(sectionId) {
 function setCenter(sectionId) {           
     var moveLatLon = new kakao.maps.LatLng(36.4295023415802, 128.067007021683);
     var mapContainer = document.querySelector('#' + sectionId + ' .map');
-
-    if (!mapContainer.dataset.mapInitialized) {
-        console.log("지도 객체가 아직 초기화되지 않았습니다.");
-        return;
-    }
-
-    var map = mapContainer.mapObject;
+    var map = new kakao.maps.Map(mapContainer, options); // options는 지도 생성에 필요한 기본 옵션
     map.setCenter(moveLatLon);
     map.setLevel(13);
 }
@@ -336,7 +330,7 @@ function loadCityData(city, sectionId) {
     // 이미 생성된 지도가 있는지 확인
     if (!mapContainer.dataset.mapObject) {
         map = new kakao.maps.Map(mapContainer, options);
-        mapContainer.dataset.mapObject = true; // 지도 초기화 표시
+        mapContainer.dataset.mapObject = map; // 지도 객체 저장
     } else {
         map = mapContainer.dataset.mapObject; // 이미 있는 지도 객체 재사용
     }
