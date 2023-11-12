@@ -140,19 +140,13 @@ function toggleTraffic(sectionId) {
     }
 }
 
-function setCenter(sectionId) {
+function setCenter(sectionId) {           
     var moveLatLon = new kakao.maps.LatLng(36.4295023415802, 128.067007021683);
-
-    // 지도 객체가 이미 생성되었는지 확인하고 재사용
-    var map = maps[sectionId];
-    if (map) {
-        map.setCenter(moveLatLon);
-        map.setLevel(13);
-    } else {
-        console.log("Map object not found for section:", sectionId);
-    }
+    var mapContainer = document.querySelector('#' + sectionId + ' .map');
+    var map = new kakao.maps.Map(mapContainer, options); // options는 지도 생성에 필요한 기본 옵션
+    map.setCenter(moveLatLon);
+    map.setLevel(13);
 }
-
 
 
 // Arrays to hold markers and circles
@@ -326,9 +320,6 @@ const cityCoordinates = {
 };
 
 	    
-// 전역 변수로 지도 객체들을 관리
-var maps = {};
-
 function loadCityData(city, sectionId) {
     clearMap(sectionId);
 
@@ -336,12 +327,12 @@ function loadCityData(city, sectionId) {
     var mapContainer = document.querySelector('#' + sectionId + ' .map');
     var map;
 
-    // 지도 객체가 이미 생성되었는지 확인
-    if (!maps[sectionId]) {
+    // 이미 생성된 지도가 있는지 확인
+    if (!mapContainer.dataset.mapObject) {
         map = new kakao.maps.Map(mapContainer, options);
-        maps[sectionId] = map; // 지도 객체를 전역 변수에 저장
+        mapContainer.dataset.mapObject = map; // 지도 객체 저장
     } else {
-        map = maps[sectionId]; // 이미 있는 지도 객체 재사용
+        map = mapContainer.dataset.mapObject; // 이미 있는 지도 객체 재사용
     }
 
     map.setCenter(new kakao.maps.LatLng(cityData.lat, cityData.lng));
@@ -353,7 +344,6 @@ function loadCityData(city, sectionId) {
         console.log("Data for", city, "is not yet implemented or the city is not recognized.");
     }
 }
-
 
 
 
