@@ -25,36 +25,36 @@
     	    </div>
 		
 	    <!-- 섹션 1 -->
-	    <div id="Section1" class="content-section">
-		<div id="controls">
-		    <input id="pac-input" type="text" placeholder="위치 검색">
-		    <button id="homeButton" onclick="setCenter()">처음으로</button>
-		    <button id="trafficButton" onclick="toggleTraffic()">교통정보 표시</button>
-		    <button id="clearButton" onclick="clearMap()">마커 지우기</button>
-		</div>
-		<div id="city-section">
-		    <div id="map"></div>
-		    <div id="city-buttons">
-			<button onclick="loadCityData('서울')">서울</button><br>
-			<button onclick="loadCityData('부산')">부산</button><br>
-			<button onclick="loadCityData('대구')">대구</button><br>
-			<button onclick="loadCityData('인천')">인천</button><br>
-			<button onclick="loadCityData('광주')">광주</button><br>
-			<button onclick="loadCityData('대전')">대전</button><br>
-			<button onclick="loadCityData('세종')">세종</button><br>
-			<button onclick="loadCityData('울산')">울산</button><br>
-			<button onclick="loadCityData('경남')">경남</button><br>
+		<div id="Section1" class="content-section">
+		    <div class="controls">
+		        <input class="pac-input" type="text" placeholder="위치 검색">
+		        <button class="homeButton" onclick="setCenter('Section1')">처음으로</button>
+		        <button class="trafficButton" onclick="toggleTraffic('Section1')">교통정보 표시</button>
+		        <button class="clearButton" onclick="clearMap('Section1')">마커 지우기</button>
+		    </div>
+		    <div class="city-section">
+		        <div class="map"></div>
+		        <div class="city-buttons">
+		            <button onclick="loadCityData('서울', 'Section1')">서울</button><br>
+			<button onclick="loadCityData('부산', 'Section1')">부산</button><br>
+			<button onclick="loadCityData('대구', 'Section1')">대구</button><br>
+			<button onclick="loadCityData('인천', 'Section1')">인천</button><br>
+			<button onclick="loadCityData('광주', 'Section1')">광주</button><br>
+			<button onclick="loadCityData('대전', 'Section1')">대전</button><br>
+			<button onclick="loadCityData('세종', 'Section1')">세종</button><br>
+			<button onclick="loadCityData('울산', 'Section1')">울산</button><br>
+			<button onclick="loadCityData('경남', 'Section1')">경남</button><br>
 		    </div>
 		    <div id="city-buttons">
-			<button onclick="loadCityData('경북')">경북</button><br>
-			<button onclick="loadCityData('경기남부')">경기남부</button><br>
-			<button onclick="loadCityData('경기북부')">경기북부</button><br>
-			<button onclick="loadCityData('강원')">강원</button><br>
-			<button onclick="loadCityData('충북')">충북</button><br>
-			<button onclick="loadCityData('충남')">충남</button><br>
-			<button onclick="loadCityData('전남')">전남</button><br>
-			<button onclick="loadCityData('전북')">전북</button><br>
-			<button onclick="loadCityData('제주')">제주</button><br>
+			<button onclick="loadCityData('경북', 'Section1')">경북</button><br>
+			<button onclick="loadCityData('경기남부', 'Section1')">경기남부</button><br>
+			<button onclick="loadCityData('경기북부', 'Section1')">경기북부</button><br>
+			<button onclick="loadCityData('강원', 'Section1')">강원</button><br>
+			<button onclick="loadCityData('충북', 'Section1')">충북</button><br>
+			<button onclick="loadCityData('충남', 'Section1')">충남</button><br>
+			<button onclick="loadCityData('전남', 'Section1')">전남</button><br>
+			<button onclick="loadCityData('전북', 'Section1')">전북</button><br>
+			<button onclick="loadCityData('제주', 'Section1')">제주</button><br>
 		    </div>
 		</div>
 		<p>제공된 마커와 원의 위치는 실제 진행 위치와 다소 다를 수 있습니다.</p>
@@ -63,52 +63,45 @@
 			<input id="comment-input" type="text" placeholder="댓글 입력">
 			<button id="commentButton">댓글 작성</button>
 		    </div>
-		    <div id="comment-container">
+		    <div class="comment-container">
 			<!-- 여기에 서버로부터 로드된 댓글이 표시됩니다 -->
 		    </div>
 		
-	    <!-- 섹션 2 -->
-	    <div id="Section2" class="content-section">
-		<div id="controls">
-		    <input id="pac-input" type="text" placeholder="위치 검색">
-		    <button id="homeButton" onclick="setCenter()">처음으로</button>
-		    <button id="trafficButton" onclick="toggleTraffic()">교통정보 표시</button>
-		    <button id="clearButton" onclick="clearMap()">마커 지우기</button>
-		</div>
-		<div id="city-section">
-		    <div id="map"></div>
-		    <div id="city-buttons">
-			<button onclick="loadCityData('서울')">서울</button><br>
-			<button onclick="loadCityData('부산')">부산</button><br>
-			<button onclick="loadCityData('대구')">대구</button><br>
-			<button onclick="loadCityData('인천')">인천</button><br>
-			<button onclick="loadCityData('광주')">광주</button><br>
-			<button onclick="loadCityData('대전')">대전</button><br>
-			<button onclick="loadCityData('세종')">세종</button><br>
-			<button onclick="loadCityData('울산')">울산</button><br>
-			<button onclick="loadCityData('경남')">경남</button><br>
+	    <!-- 섹션 2 -->		
+		<div id="Section2" class="content-section">
+		    <div class="controls">
+		        <input class="pac-input" type="text" placeholder="위치 검색">
+		        <button class="homeButton" onclick="setCenter('Section2')">처음으로</button>
+		        <button class="trafficButton" onclick="toggleTraffic('Section2')">교통정보 표시</button>
+		        <button class="clearButton" onclick="clearMap('Section2')">마커 지우기</button>
+		    </div>
+		    <div class="city-section">
+		        <div class="map"></div>
+		        <div class="city-buttons">
+		            <button onclick="loadCityData('서울', 'Section2')">서울</button><br>
+			<button onclick="loadCityData('부산', 'Section2')">부산</button><br>
+			<button onclick="loadCityData('대구', 'Section2')">대구</button><br>
+			<button onclick="loadCityData('인천', 'Section2')">인천</button><br>
+			<button onclick="loadCityData('광주', 'Section2')">광주</button><br>
+			<button onclick="loadCityData('대전', 'Section2')">대전</button><br>
+			<button onclick="loadCityData('세종', 'Section2')">세종</button><br>
+			<button onclick="loadCityData('울산', 'Section2')">울산</button><br>
+			<button onclick="loadCityData('경남', 'Section2')">경남</button><br>
 		    </div>
 		    <div id="city-buttons">
-			<button onclick="loadCityData('경북')">경북</button><br>
-			<button onclick="loadCityData('경기남부')">경기남부</button><br>
-			<button onclick="loadCityData('경기북부')">경기북부</button><br>
-			<button onclick="loadCityData('강원')">강원</button><br>
-			<button onclick="loadCityData('충북')">충북</button><br>
-			<button onclick="loadCityData('충남')">충남</button><br>
-			<button onclick="loadCityData('전남')">전남</button><br>
-			<button onclick="loadCityData('전북')">전북</button><br>
-			<button onclick="loadCityData('제주')">제주</button><br>
+			<button onclick="loadCityData('경북', 'Section2')">경북</button><br>
+			<button onclick="loadCityData('경기남부', 'Section2')">경기남부</button><br>
+			<button onclick="loadCityData('경기북부', 'Section2')">경기북부</button><br>
+			<button onclick="loadCityData('강원', 'Section2')">강원</button><br>
+			<button onclick="loadCityData('충북', 'Section2')">충북</button><br>
+			<button onclick="loadCityData('충남', 'Section2')">충남</button><br>
+			<button onclick="loadCityData('전남', 'Section2')">전남</button><br>
+			<button onclick="loadCityData('전북', 'Section2')">전북</button><br>
+			<button onclick="loadCityData('제주', 'Section2')">제주</button><br>
 		    </div>
 		</div>
 		<p>제공된 마커와 원의 위치는 실제 진행 위치와 다소 다를 수 있습니다.</p>
-		<div id="dataframe-container"></div>
-
-	    <div id="comments">
-		<input id="comment-input" type="text" placeholder="댓글 입력">
-		<button id="commentButton">댓글 작성</button>
-	    </div>
-	    <div id="comment-container">
-		<!-- 여기에 서버로부터 로드된 댓글이 표시됩니다 -->
+		<div class="dataframe-container"></div>
 	    </div>
 	</main>
     <footer>
@@ -133,7 +126,10 @@ map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 trafficLayerOn = true; // 초기 상태는 교통정보가 표시되도록 설정
 
 // 교통정보 표시를 토글하는 함수
-function toggleTraffic() {
+function toggleTraffic(sectionId) {
+    var mapContainer = document.querySelector('#' + sectionId + ' .map');
+    var map = new kakao.maps.Map(mapContainer, options);
+
     if (trafficLayerOn) {
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
         trafficLayerOn = false;
@@ -142,42 +138,49 @@ function toggleTraffic() {
         trafficLayerOn = true;
     }
 }
-      function setCenter() {           
-	  // 이동할 위도 경도 위치를 생성합니다 
-	  var moveLatLon = new kakao.maps.LatLng(36.4295023415802, 128.067007021683);
-    
-          // 지도 중심을 이동 시킵니다
-   	  map.setCenter(moveLatLon);
-	  map.setLevel(13);
-      }
+
+function setCenter(sectionId) {           
+    var moveLatLon = new kakao.maps.LatLng(36.4295023415802, 128.067007021683);
+    var mapContainer = document.querySelector('#' + sectionId + ' .map');
+    var map = new kakao.maps.Map(mapContainer, options); // options는 지도 생성에 필요한 기본 옵션
+    map.setCenter(moveLatLon);
+    map.setLevel(13);
+}
+
 
 // Arrays to hold markers and circles
 var markers = [];
 var circles = [];
 	    
-function clearMap() {
+function clearMap(sectionId) {
+    var markers = []; // 마커 배열, 섹션 별로 관리 필요
+    var circles = []; // 원 배열, 섹션 별로 관리 필요
+
     // Clear markers
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
-    markers = [];
 
     // Clear circles
     for (var i = 0; i < circles.length; i++) {
         circles[i].setMap(null);
     }
-    circles = [];
     
     // Clear the dataframe
-    document.getElementById("dataframe-container").innerHTML = "";
-}	    
+    var dataframeContainer = document.querySelector('#' + sectionId + ' .dataframe-container');
+    dataframeContainer.innerHTML = "";
+}
+  
 	    
 	    
 // CSV 파일을 읽어오고 데이터를 처리하는 함수
-function loadAndPlotData(cityName) {
-    // Derive the filename from the city name
+function loadAndPlotData(cityName, sectionId) {
     const filename = `RT_${cityCodeMapping[cityName]}_Update.csv`;
-	
+    var mapContainer = document.querySelector('#' + sectionId + ' .map');
+    var map = new kakao.maps.Map(mapContainer, options);
+    var markers = []; // 섹션별 마커 관리
+    var circles = []; // 섹션별 원 관리
+
     fetch(filename)
         .then(response => response.text())
         .then(data => {
@@ -190,104 +193,87 @@ function loadAndPlotData(cityName) {
                 if (row['관련 지역'] && row['신고 인원']) {
                     let address = row['관련 지역'];
                     address = address.replace(/\s*등\s*$/, '');  
-                    address = cityName + " " + address;  // Use the passed city name here
+                    address = cityName + " " + address;
 
+                    const population = parseInt(row['신고 인원'], 10);
+                    if (isNaN(population)) {
+                        console.warn('Invalid population value for address:', address);
+                        return;
+                    }
 
-		    const population = parseInt(row['신고 인원'], 10);
+                    geocodeAddress(address, sectionId, function (location) {
+                        if (!location || isNaN(location.Ma) || isNaN(location.La)) {
+                            console.error('Invalid coordinates for address:', address);
+                            return;
+                        }
 
-			// Check if population is a valid number
-			if (isNaN(population)) {
-			    console.warn('Invalid population value for address:', address);
-			    return;  // Skip the current iteration
-			}
+                        const radius = Math.sqrt(population) * 10;
+                        if (isNaN(radius)) {
+                            console.error('Invalid radius value for address:', address);
+                            return;
+                        }
 
-			
-		    geocodeAddress(address, function (location) {
-			console.log("Returned location:", location);
-			// 유효한 좌표인지 확인
-			if (!location || isNaN(location.Ma) || isNaN(location.La)) {
-			    console.error('Invalid coordinates for address:', address);
-			    return;  // Skip the current iteration
-			}
+                        var circle = new kakao.maps.Circle({
+                            center: new kakao.maps.LatLng(location.Ma, location.La),
+                            radius: radius,
+                            strokeWeight: 2,
+                            strokeColor: '#FF0000',
+                            strokeOpacity: 0.5,
+                            fillColor: '#FF0000',
+                            fillOpacity: 0.05,
+                            map: map
+                        });
+                        circles.push(circle);
 
-			    
-			const radius = Math.sqrt(population) * 10;  // 인원 수의 제곱근에 비례하여 반지름 설정
-			    // 반지름 값이 NaN인 경우 원형 마커 생성을 스킵
-				if (isNaN(radius)) {
-				    console.error('Invalid radius value for address:', address);
-				    return;  // Skip the current iteration
-				}
+                        var marker = new kakao.maps.Marker({
+                            position: new kakao.maps.LatLng(location.Ma, location.La),
+                            map: map,
+                            title: address
+                        });
+                        markers.push(marker);
+                    });
+                }
+            });
 
-			    
-			// 원형 마커 생성
-			var circle = new kakao.maps.Circle({
-			    center: new kakao.maps.LatLng(location.Ma, location.La),
-			    radius: radius,
-			    strokeWeight: 2,
-			    strokeColor: '#FF0000',
-			    strokeOpacity: 0.5,
-			    fillColor: '#FF0000',
-			    fillOpacity: 0.05,
-			    map: map
-			});
-			circles.push(circle);
+            var html = '<table class="dataframe">';
+            html += '<thead><tr>';
+            results.meta.fields.forEach(field => {
+                html += '<th>' + field + '</th>';
+            });
+            html += '</tr></thead><tbody>';
+            results.data.forEach(row => {
+                html += '<tr>';
+                results.meta.fields.forEach(field => {
+                    html += '<td>' + row[field] + '</td>';
+                }); 
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
 
-			// 마커 생성
-			var marker = new kakao.maps.Marker({
-			    position: new kakao.maps.LatLng(location.Ma, location.La),
-			    map: map,
-			    title: address
-			});
-			markers.push(marker);
-		    });
-		}
-	    });
-
-		// Generate the HTML table from the parsed data
-		var html = '<table class="dataframe">';
-		html += '<thead><tr>';
-		results.meta.fields.forEach(field => {
-		    html += '<th>' + field + '</th>';
-		});
-		html += '</tr></thead>';
-		
-		html += '<tbody>';
-		results.data.forEach(row => {
-		    html += '<tr>';
-		    results.meta.fields.forEach(field => {
-			html += '<td>' + row[field] + '</td>';
-		    }); 
-		    html += '</tr>';
-		});
-		html += '</tbody>';
-		html += '</table>';
-		
-		// Insert the generated table into the webpage
-		document.getElementById("dataframe-container").innerHTML = html;
-
-	})
-	.catch(error => {
-	    console.error('Error loading or parsing the CSV:', error);
-	});
+            document.querySelector('#' + sectionId + ' .dataframe-container').innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error loading or parsing the CSV:', error);
+        });
 }
+
 	    
 // 주소를 좌표로 변환하는 함수
-function geocodeAddress(address, callback) {
+function geocodeAddress(address, sectionId, callback) {
     var geocoder = new kakao.maps.services.Geocoder();
-    geocoder.addressSearch(address, function (result, status) {
-	// 정상적으로 검색이 완료됐으면 
-	if (status === kakao.maps.services.Status.OK) {
-	    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-	    callback(coords); // 좌표 반환
+    var mapContainer = document.querySelector('#' + sectionId + ' .map');
+    var map = new kakao.maps.Map(mapContainer, options);
 
-	    // 로그를 출력하여 location 객체의 값을 확인합니다.
-	    console.log("Address:", address, "Coordinates:", coords);
-		
-	} else {
-	    console.error('Failed to get coordinates for address:', address);
-	}
+    geocoder.addressSearch(address, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            callback(coords, map); // 좌표와 지도 객체 반환
+        } else {
+            console.error('Failed to get coordinates for address:', address);
+        }
     });
 }
+
 
 
 
@@ -335,17 +321,18 @@ const cityCoordinates = {
 };
 
 	    
-function loadCityData(city) {
-    clearMap();
+function loadCityData(city, sectionId) {
+    clearMap(sectionId);
 
     // Set map center and zoom based on the city
     if (cityCoordinates[city]) {
         const cityData = cityCoordinates[city];
+        var mapContainer = document.querySelector('#' + sectionId + ' .map');
+        var map = new kakao.maps.Map(mapContainer, options); // options는 지도 생성에 필요한 기본 옵션
         map.setCenter(new kakao.maps.LatLng(cityData.lat, cityData.lng));
         map.setLevel(cityData.zoom);
     }
 
-	
     // Check if the city code exists in the mapping
     if (cityCodeMapping[city]) {
         loadAndPlotData(city);  // Pass the city name here
@@ -353,6 +340,7 @@ function loadCityData(city) {
         console.log("Data for", city, "is not yet implemented or the city is not recognized.");
     }
 }
+
 
 
 
@@ -371,22 +359,24 @@ document.getElementById('pac-input').addEventListener('keydown', function (e) {
 });
 
 // 키워드로 장소를 검색합니다.
-function searchPlaces() {
-    var keyword = document.getElementById('pac-input').value;
-
+function searchPlaces(sectionId) {
+    var keyword = document.querySelector('#' + sectionId + ' .pac-input').value;
     if (!keyword.replace(/^\s+|\s+$/g, '')) {
         alert('키워드를 입력해주세요!');
         return false;
     }
-
+	
+    var mapContainer = document.querySelector('#' + sectionId + ' .map');
+    var map = new kakao.maps.Map(mapContainer, options);
     // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다.
-    ps.keywordSearch(keyword, placesSearchCB);
+    ps.keywordSearch(keyword, function (data, status, pagination) {
+        placesSearchCB(data, status, pagination, map);
+    });
 }
 
-// 키워드 검색 완료 시 호출되는 콜백함수 입니다.
-function placesSearchCB(data, status, pagination) {
+
+function placesSearchCB(data, status, pagination, map) {
     if (status === kakao.maps.services.Status.OK) {
-        // 검색된 장소 위치를 첫번째로 맵 중심을 이동합니다.
         map.setCenter(new kakao.maps.LatLng(data[0].y, data[0].x));
 	    
         // 원하는 마커 이미지의 URL
@@ -404,28 +394,32 @@ function placesSearchCB(data, status, pagination) {
             image: markerImage // 마커 이미지를 설정합니다.
         });
 
-
-        infowindow.setContent('<div style="padding:5px;font-size:12px;color:black;">' + data[0].place_name + '</div>');
+        // 정보창에 검색된 장소명을 표시합니다.
+        var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="padding:5px;font-size:12px;color:black;">' + data[0].place_name + '</div>'
+        });
         infowindow.open(map, marker);
+	    
     } else {
         alert('검색 결과가 존재하지 않습니다.');
         return;
     }
 }
 
-    function openSection(evt, sectionName) {
-        var i, sectioncontent, tablinks;
-        sectioncontent = document.getElementsByClassName("content-section");
-        for (i = 0; i < sectioncontent.length; i++) {
-            sectioncontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(sectionName).style.display = "block";
-        evt.currentTarget.className += " active";
+function openSection(evt, sectionName) {
+    var sectioncontent, tablinks;
+    sectioncontent = document.getElementsByClassName("content-section");
+    for (var i = 0; i < sectioncontent.length; i++) {
+        sectioncontent[i].style.display = "none";
     }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (var i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(sectionName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
     // 기본적으로 첫 번째 탭을 활성화
     document.getElementsByClassName("tablinks")[0].click();
 
