@@ -20,12 +20,12 @@
 	<main>
 	    <!-- 탭 버튼들 -->
 	    <div class="tab">
-		<button class="tablinks" onclick="openMap(event, 'Map1')">지도 1</button>
-		<button class="tablinks" onclick="openMap(event, 'Map2')">지도 2</button>
-	    </div>
-	
-	    <!-- 지도 1 -->
-	    <div id="Map1" class="map-container">
+		<button class="tablinks" onclick="openSection(event, 'Section1')">지도 1</button>
+        	<button class="tablinks" onclick="openSection(event, 'Section2')">지도 2</button>
+    	    </div>
+		
+	    <!-- 섹션 1 -->
+	    <div id="Section1" class="content-section">
 		<div id="controls">
 		    <input id="pac-input" type="text" placeholder="위치 검색">
 		    <button id="homeButton" onclick="setCenter()">처음으로</button>
@@ -66,10 +66,9 @@
 			<!-- 여기에 서버로부터 로드된 댓글이 표시됩니다 -->
 		    </div>
 	    </div>
-	
-	    <!-- 지도 2 -->
-	    <div id="Map2" class="map-container">
-		<!-- 지도 2의 내용 -->
+		
+	    <!-- 섹션 2 -->
+	    <div id="Section2" class="content-section">
 		<div id="controls">
 		    <input id="pac-input" type="text" placeholder="위치 검색">
 		    <button id="homeButton" onclick="setCenter()">처음으로</button>
@@ -413,40 +412,18 @@ function placesSearchCB(data, status, pagination) {
     }
 }
 
-    function openMap(evt, mapName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("map-container");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
+    function openSection(evt, sectionName) {
+        var i, sectioncontent, tablinks;
+        sectioncontent = document.getElementsByClassName("content-section");
+        for (i = 0; i < sectioncontent.length; i++) {
+            sectioncontent[i].style.display = "none";
         }
         tablinks = document.getElementsByClassName("tablinks");
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
-        document.getElementById(mapName).style.display = "block";
+        document.getElementById(sectionName).style.display = "block";
         evt.currentTarget.className += " active";
-
-        // 지도 초기화 코드는 여기에 추가합니다.
-	if (mapName === "Map1") {
-	    // 지도 1 초기화 코드
-	    var mapContainer = document.getElementById('Map1'), // 지도를 표시할 div
-	        mapOption = { 
-	            center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도의 중심좌표
-	            level: 3 // 지도의 확대 레벨
-	        };  
-	
-	    var map1 = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-	} else if (mapName === "Map2") {
-	    // 지도 2 초기화 코드
-	    var mapContainer = document.getElementById('Map2'), // 지도를 표시할 div
-	        mapOption = { 
-	            center: new kakao.maps.LatLng(35.1796, 129.0756), // 지도의 중심좌표 (예: 부산)
-	            level: 3 // 지도의 확대 레벨
-	        };  
-	
-	    var map2 = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-	}
-
     }
     // 기본적으로 첫 번째 탭을 활성화
     document.getElementsByClassName("tablinks")[0].click();
