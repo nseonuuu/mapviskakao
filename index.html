@@ -33,7 +33,7 @@
 		    <button id="clearButton" onclick="clearMap()">마커 지우기</button>
 		</div>
 		<div id="city-section">
-		    <div id="map1"></div>
+		    <div id="map"></div>
 		    <div id="city-buttons">
 			<button onclick="loadCityData('서울')">서울</button><br>
 			<button onclick="loadCityData('부산')">부산</button><br>
@@ -76,8 +76,8 @@
 		    <button id="clearButton" onclick="clearMap()">마커 지우기</button>
 		</div>
 		<div id="city-section">
-		    <div id="map2"></div>
-		    <div id="city-buttons2">
+		    <div id="map"></div>
+		    <div id="city-buttons">
 			<button onclick="loadCityData('서울')">서울</button><br>
 			<button onclick="loadCityData('부산')">부산</button><br>
 			<button onclick="loadCityData('대구')">대구</button><br>
@@ -88,7 +88,7 @@
 			<button onclick="loadCityData('울산')">울산</button><br>
 			<button onclick="loadCityData('경남')">경남</button><br>
 		    </div>
-		    <div id="city-buttons2">
+		    <div id="city-buttons">
 			<button onclick="loadCityData('경북')">경북</button><br>
 			<button onclick="loadCityData('경기남부')">경기남부</button><br>
 			<button onclick="loadCityData('경기북부')">경기북부</button><br>
@@ -124,15 +124,6 @@
       };
 
       var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-
-      // 섹션 1의 지도 로딩 로직
-	var container1 = document.getElementById('map1');
-	var map1 = new kakao.maps.Map(container1, options);
-	
-	// 섹션 2의 지도 로딩 로직
-	var container2 = document.getElementById('map2');
-	var map2 = new kakao.maps.Map(container2, options);
-
 
 // 교통정보 표시 여부를 추적하는 변수
 var trafficLayerOn = false;
