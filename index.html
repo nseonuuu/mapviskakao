@@ -330,9 +330,9 @@ function loadCityData(city, sectionId) {
     // 이미 생성된 지도가 있는지 확인
     if (!mapContainer.dataset.map) {
         map = new kakao.maps.Map(mapContainer, options);
-        mapContainer.dataset.map = JSON.stringify(true); // 지도 생성 여부 표시
+        mapContainer.dataset.mapObject = map; // 지도 객체 저장
     } else {
-        map = new kakao.maps.Map(mapContainer, options); // 이미 있는 지도 객체 재사용
+        map = mapContainer.dataset.mapObject; // 이미 있는 지도 객체 재사용
     }
 
     map.setCenter(new kakao.maps.LatLng(cityData.lat, cityData.lng));
