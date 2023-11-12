@@ -352,7 +352,7 @@ var ps = new kakao.maps.services.Places();
 var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
 // 검색창에 키 입력 시 검색 결과를 표시하는 이벤트 리스너를 추가합니다.
-document.getElementById('pac-input').addEventListener('keydown', function (e) {
+document.querySelector('pac-input').addEventListener('keydown', function (e) {
     if (e.keyCode === 13) { // Enter 키
         searchPlaces();
     }
