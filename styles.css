@@ -100,7 +100,7 @@
             border-right: 1px solid #ccc; /* Optional: Adds a border between the map and the buttons */
         }
         
-        #city-buttons, #city-buttons2 {
+        #city-buttons {
             flex: 1;  /* 1/9 of the container's width for each button column */
             display: flex;
             flex-direction: column;
@@ -110,7 +110,7 @@
             box-sizing: border-box;  /* Ensures padding doesn't expand the div beyond its flex size */
         }
         
-        #city-buttons, city-buttons2 {
+        #city-buttons {
             width: 100%;  /* Full width of the container */
             height: calc(100% / 9 - 10px);  /* Divides the height by the number of buttons, adjusting for gaps */
             margin: 2rem 0;
