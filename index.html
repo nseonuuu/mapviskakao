@@ -176,7 +176,6 @@ function clearMap(sectionId) {
 // CSV 파일을 읽어오고 데이터를 처리하는 함수
 function loadAndPlotData(cityName, sectionId, map) {
     const filename = `RT_${cityCodeMapping[cityName]}_Update.csv`;
-    var mapContainer = document.querySelector('#' + sectionId + ' .map');
     var markers = []; // 섹션별 마커 관리
     var circles = []; // 섹션별 원 관리
 
@@ -256,6 +255,7 @@ function loadAndPlotData(cityName, sectionId, map) {
         });
 }
 
+
 	    
 // 주소를 좌표로 변환하는 함수
 function geocodeAddress(address, sectionId, callback) {
@@ -323,22 +323,28 @@ const cityCoordinates = {
 function loadCityData(city, sectionId) {
     clearMap(sectionId);
 
-    // Set map center and zoom based on the city
-    if (cityCoordinates[city]) {
-        const cityData = cityCoordinates[city];
-        var mapContainer = document.querySelector('#' + sectionId + ' .map');
-        var map = new kakao.maps.Map(mapContainer, options); // options는 지도 생성에 필요한 기본 옵션
-        map.setCenter(new kakao.maps.LatLng(cityData.lat, cityData.lng));
-        map.setLevel(cityData.zoom);
+    const cityData = cityCoordinates[city];
+    var mapContainer = document.querySelector('#' + sectionId + ' .map');
+    var map;
+
+    // 이미 생성된 지도가 있는지 확인
+    if (!mapContainer.dataset.map) {
+        map = new kakao.maps.Map(mapContainer, options);
+        mapContainer.dataset.map = JSON.stringify(true); // 지도 생성 여부 표시
+    } else {
+        map = new kakao.maps.Map(mapContainer, options); // 이미 있는 지도 객체 재사용
     }
 
-    // Check if the city code exists in the mapping
+    map.setCenter(new kakao.maps.LatLng(cityData.lat, cityData.lng));
+    map.setLevel(cityData.zoom);
+
     if (cityCodeMapping[city]) {
-        loadAndPlotData(city, sectionId, map);  // Pass the city name here
+        loadAndPlotData(city, sectionId, map); // 이미 생성된 지도 객체 전달
     } else {
         console.log("Data for", city, "is not yet implemented or the city is not recognized.");
     }
 }
+
 
 
 
