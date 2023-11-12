@@ -424,7 +424,16 @@ function openSection(evt, sectionName) {
     document.getElementById(sectionName).style.display = "block";
     evt.currentTarget.className += " active";
 }
-
+    // Section2가 활성화될 때 지도 초기화
+    if (sectionName === "Section2") {
+        var mapContainer = document.getElementById('Section2').querySelector('.map');
+        
+        // 지도 객체 생성 로직 (예시)
+        var map = new kakao.maps.Map(mapContainer, {
+            center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 위치 (예: 서울 시청)
+            level: 3 // 지도의 확대 레벨
+        });
+	    
     // 기본적으로 첫 번째 탭을 활성화
     document.getElementsByClassName("tablinks")[0].click();
 
