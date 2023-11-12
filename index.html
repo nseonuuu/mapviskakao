@@ -335,7 +335,7 @@ function loadCityData(city, sectionId) {
 
     // Check if the city code exists in the mapping
     if (cityCodeMapping[city]) {
-        loadAndPlotData(city);  // Pass the city name here
+        loadAndPlotData(city, sectionId);  // Pass the city name here
     } else {
         console.log("Data for", city, "is not yet implemented or the city is not recognized.");
     }
