@@ -413,17 +413,20 @@ function placesSearchCB(data, status, pagination, map) {
 
 function openSection(evt, sectionName) {
     var sectioncontent, tablinks;
+    // Hide all sections
     sectioncontent = document.getElementsByClassName("content-section");
     for (var i = 0; i < sectioncontent.length; i++) {
         sectioncontent[i].style.display = "none";
     }
+    // Deactivate all tabs
     tablinks = document.getElementsByClassName("tablinks");
     for (var i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
+    // Display the selected section
     document.getElementById(sectionName).style.display = "block";
     evt.currentTarget.className += " active";
-}
+
     // Section2가 활성화될 때 지도 초기화
     if (sectionName === "Section2") {
         var mapContainer = document.getElementById('Section2').querySelector('.map');
@@ -433,10 +436,10 @@ function openSection(evt, sectionName) {
             center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 위치 (예: 서울 시청)
             level: 3 // 지도의 확대 레벨
         });
+    }
 	    
     // 기본적으로 첫 번째 탭을 활성화
     document.getElementsByClassName("tablinks")[0].click();
-    }
                 	    
     </script>
 
