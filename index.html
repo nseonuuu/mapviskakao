@@ -146,11 +146,11 @@ function openSection(evt, sectionName) {
     // Section2가 활성화될 때 지도 초기화
     if (sectionName === "Section2") {
         var mapContainer = document.getElementById('Section2').querySelector('.map');
-        // 지도 객체 생성 로직 (예시)
         var map = new kakao.maps.Map(mapContainer, {
-            center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 위치 (예: 서울 시청)
-            level: 3 // 지도의 확대 레벨
+            center: new kakao.maps.LatLng(37.5665, 126.9780),
+            level: 3
         });
+        maps['Section2'] = map; // 지도 객체 저장
     }
 }
 
@@ -364,6 +364,11 @@ function loadCityData(city, sectionId) {
     const cityData = cityCoordinates[city];
     var map = maps[sectionId]; // 기존 지도 객체 사용
 
+    if (!map) {
+        console.error("지도 객체가 없습니다:", sectionId);
+        return;
+    }
+	
     map.setCenter(new kakao.maps.LatLng(cityData.lat, cityData.lng));
     map.setLevel(cityData.zoom);
 
