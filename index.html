@@ -110,17 +110,15 @@
     </footer>
 
     <script>
-	document.addEventListener('DOMContentLoaded', function() {
-	    var options = {
-	        center: new kakao.maps.LatLng(36.4295023415802, 128.067007021683),
-	        level: 13
-	    };
-	
-	    var container = document.querySelector('.map');
-	    var map = new kakao.maps.Map(container, options);
-	    // 여기에 기타 초기화 코드 추가
-	});
+      var container = document.querySelector('.map'); //지도를 담을 영역의 DOM 레퍼런스
+      var options = { //지도를 생성할 때 필요한 기본 옵션
+	            center: new kakao.maps.LatLng(36.4295023415802, 128.067007021683), //지도의 중심좌표.
+	            level: 13 //지도의 레벨(확대, 축소 정도)
 
+      };
+
+      var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+      var maps = {}; // 모든 지도 객체를 저장할 객체
 
 function openSection(evt, sectionName) {
     var i, sectioncontent, tablinks;
@@ -159,16 +157,12 @@ function openSection(evt, sectionName) {
 // 페이지 로드 시 첫 번째 탭 활성화
 document.getElementsByClassName("tablinks")[0].click();
 	    
-// 지도 객체 생성 시, 각 섹션별로 지도 객체에 trafficLayerOn 속성을 추가합니다.
-var mapSection1 = new kakao.maps.Map(document.getElementById('mapSection1'), {/* ... */});
-mapSection1.trafficLayerOn = true;  // 교통정보 표시 초기 상태 설정
+// 교통정보 표시 여부를 추적하는 변수
+var trafficLayerOn = false;
 
-var mapSection2 = new kakao.maps.Map(document.getElementById('mapSection2'), {/* ... */});
-mapSection2.trafficLayerOn = true;  // 교통정보 표시 초기 상태 설정
-
-maps['Section1'] = mapSection1;
-maps['Section2'] = mapSection2;
-
+// 지도에 교통정보를 표시하도록 지도타입을 추가합니다
+map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+trafficLayerOn = true; // 초기 상태는 교통정보가 표시되도록 설정
 
 // 교통정보 표시를 토글하는 함수
 function toggleTraffic(sectionId) {
@@ -184,12 +178,12 @@ function toggleTraffic(sectionId) {
 }
 
 
-function setCenter(sectionId) {
+function setCenter(sectionId) {           
     var moveLatLon = new kakao.maps.LatLng(36.4295023415802, 128.067007021683);
-    var map = maps[sectionId];
-    if (map) {
-        map.setCenter(moveLatLon);
-    }
+    var mapContainer = document.querySelector('#' + sectionId + ' .map');
+    var map = new kakao.maps.Map(mapContainer, options); // options는 지도 생성에 필요한 기본 옵션
+    map.setCenter(moveLatLon);
+    map.setLevel(13);
 }
 
 
