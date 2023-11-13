@@ -422,35 +422,42 @@ function placesSearchCB(data, status, pagination, map) {
 }
 
 function openSection(evt, sectionName) {
-    var sectioncontent, tablinks;
-    // Hide all sections
+    var i, sectioncontent, tablinks;
+
+    // 모든 섹션을 숨김
     sectioncontent = document.getElementsByClassName("content-section");
-    for (var i = 0; i < sectioncontent.length; i++) {
+    for (i = 0; i < sectioncontent.length; i++) {
         sectioncontent[i].style.display = "none";
+        sectioncontent[i].classList.remove("active-section"); // 활성 섹션 클래스 제거
     }
-    // Deactivate all tabs
+
+    // 모든 탭을 비활성화
     tablinks = document.getElementsByClassName("tablinks");
-    for (var i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active-tab", "");
     }
-    // Display the selected section
+
+    // 선택된 섹션을 표시하고 활성화
     document.getElementById(sectionName).style.display = "block";
-    evt.currentTarget.className += " active";
+    document.getElementById(sectionName).classList.add("active-section"); // 활성 섹션 클래스 추가
+
+    // 이벤트가 발생한 탭을 활성화
+    evt.currentTarget.className += " active-tab";
 
     // Section2가 활성화될 때 지도 초기화
     if (sectionName === "Section2") {
         var mapContainer = document.getElementById('Section2').querySelector('.map');
-        
         // 지도 객체 생성 로직 (예시)
         var map = new kakao.maps.Map(mapContainer, {
             center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 위치 (예: 서울 시청)
             level: 3 // 지도의 확대 레벨
         });
     }
-	    
-    // 기본적으로 첫 번째 탭을 활성화
-    document.getElementsByClassName("tablinks")[0].click();
 }
+
+// 페이지 로드 시 첫 번째 탭 활성화
+document.getElementsByClassName("tablinks")[0].click();
+
                 	    
     </script>
 
