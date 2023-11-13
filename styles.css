@@ -137,3 +137,29 @@ main {
     border-top: none;
     height: 500px;
 }
+
+/* .content-section 클래스에 대한 스타일 */
+.content-section {
+    display: none; /* 기본적으로 숨겨짐 */
+}
+
+/* 활성화된 섹션을 보여주기 위한 추가 클래스 */
+.active-section {
+    display: block; /* 활성화될 때 보여짐 */
+}
+
+/* .tablinks 클래스에 대한 기본 스타일 */
+.tablinks {
+    background-color: #f1f1f1; /* 예시 배경색 */
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    transition: 0.3s;
+}
+
+/* 활성 탭의 스타일을 위한 추가 클래스 */
+.active-tab {
+    background-color: #ddd; /* 활성 탭의 배경색 */
+    color: black; /* 활성 탭의 글자색 */
+}
