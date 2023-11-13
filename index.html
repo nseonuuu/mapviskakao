@@ -128,17 +128,17 @@ trafficLayerOn = true; // 초기 상태는 교통정보가 표시되도록 설�
 
 // 교통정보 표시를 토글하는 함수
 function toggleTraffic(sectionId) {
-    var mapContainer = document.querySelector('#' + sectionId + ' .map');
-    var map = new kakao.maps.Map(mapContainer, options);
+    var map = maps[sectionId]; // 기존 지도 객체 사용
 
-    if (trafficLayerOn) {
+    if (map.trafficLayerOn) {
         map.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-        trafficLayerOn = false;
+        map.trafficLayerOn = false;
     } else {
         map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-        trafficLayerOn = true;
+        map.trafficLayerOn = true;
     }
 }
+
 
 function setCenter(sectionId) {           
     var moveLatLon = new kakao.maps.LatLng(36.4295023415802, 128.067007021683);
@@ -324,17 +324,8 @@ var maps = {}; // 모든 지도 객체를 저장할 객체
 
 function loadCityData(city, sectionId) {
     clearMap(sectionId);
-
     const cityData = cityCoordinates[city];
-    var mapContainer = document.querySelector('#' + sectionId + ' .map');
-
-    // 지도 객체가 이미 생성되었는지 확인
-    if (!maps[sectionId]) {
-        var map = new kakao.maps.Map(mapContainer, options);
-        maps[sectionId] = map; // 지도 객체 저장
-    } else {
-        var map = maps[sectionId]; // 이미 있는 지도 객체 재사용
-    }
+    var map = maps[sectionId]; // 기존 지도 객체 사용
 
     map.setCenter(new kakao.maps.LatLng(cityData.lat, cityData.lng));
     map.setLevel(cityData.zoom);
