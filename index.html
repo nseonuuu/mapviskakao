@@ -120,6 +120,43 @@
       var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
       var maps = {}; // 모든 지도 객체를 저장할 객체
 
+function openSection(evt, sectionName) {
+    var i, sectioncontent, tablinks;
+
+    // 모든 섹션을 숨김
+    sectioncontent = document.getElementsByClassName("content-section");
+    for (i = 0; i < sectioncontent.length; i++) {
+        sectioncontent[i].style.display = "none";
+        sectioncontent[i].classList.remove("active-section"); // 활성 섹션 클래스 제거
+    }
+
+    // 모든 탭을 비활성화
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active-tab", "");
+    }
+
+    // 선택된 섹션을 표시하고 활성화
+    document.getElementById(sectionName).style.display = "block";
+    document.getElementById(sectionName).classList.add("active-section"); // 활성 섹션 클래스 추가
+
+    // 이벤트가 발생한 탭을 활성화
+    evt.currentTarget.className += " active-tab";
+
+    // Section2가 활성화될 때 지도 초기화
+    if (sectionName === "Section2") {
+        var mapContainer = document.getElementById('Section2').querySelector('.map');
+        // 지도 객체 생성 로직 (예시)
+        var map = new kakao.maps.Map(mapContainer, {
+            center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 위치 (예: 서울 시청)
+            level: 3 // 지도의 확대 레벨
+        });
+    }
+}
+
+// 페이지 로드 시 첫 번째 탭 활성화
+document.getElementsByClassName("tablinks")[0].click();
+	    
 // 교통정보 표시 여부를 추적하는 변수
 var trafficLayerOn = false;
 
@@ -412,42 +449,7 @@ function placesSearchCB(data, status, pagination, map) {
     }
 }
 
-function openSection(evt, sectionName) {
-    var i, sectioncontent, tablinks;
 
-    // 모든 섹션을 숨김
-    sectioncontent = document.getElementsByClassName("content-section");
-    for (i = 0; i < sectioncontent.length; i++) {
-        sectioncontent[i].style.display = "none";
-        sectioncontent[i].classList.remove("active-section"); // 활성 섹션 클래스 제거
-    }
-
-    // 모든 탭을 비활성화
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active-tab", "");
-    }
-
-    // 선택된 섹션을 표시하고 활성화
-    document.getElementById(sectionName).style.display = "block";
-    document.getElementById(sectionName).classList.add("active-section"); // 활성 섹션 클래스 추가
-
-    // 이벤트가 발생한 탭을 활성화
-    evt.currentTarget.className += " active-tab";
-
-    // Section2가 활성화될 때 지도 초기화
-    if (sectionName === "Section2") {
-        var mapContainer = document.getElementById('Section2').querySelector('.map');
-        // 지도 객체 생성 로직 (예시)
-        var map = new kakao.maps.Map(mapContainer, {
-            center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 위치 (예: 서울 시청)
-            level: 3 // 지도의 확대 레벨
-        });
-    }
-}
-
-// 페이지 로드 시 첫 번째 탭 활성화
-document.getElementsByClassName("tablinks")[0].click();
 
                 	    
     </script>
