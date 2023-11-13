@@ -110,15 +110,17 @@
     </footer>
 
     <script>
-      var container = document.querySelector('.map'); //지도를 담을 영역의 DOM 레퍼런스
-      var options = { //지도를 생성할 때 필요한 기본 옵션
-	            center: new kakao.maps.LatLng(36.4295023415802, 128.067007021683), //지도의 중심좌표.
-	            level: 13 //지도의 레벨(확대, 축소 정도)
+	document.addEventListener('DOMContentLoaded', function() {
+	    var options = {
+	        center: new kakao.maps.LatLng(36.4295023415802, 128.067007021683),
+	        level: 13
+	    };
+	
+	    var container = document.querySelector('.map');
+	    var map = new kakao.maps.Map(container, options);
+	    // 여기에 기타 초기화 코드 추가
+	});
 
-      };
-
-      var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-      var maps = {}; // 모든 지도 객체를 저장할 객체
 
 function openSection(evt, sectionName) {
     var i, sectioncontent, tablinks;
