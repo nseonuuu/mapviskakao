@@ -184,12 +184,12 @@ function toggleTraffic(sectionId) {
 }
 
 
-function setCenter(sectionId) {           
+function setCenter(sectionId) {
     var moveLatLon = new kakao.maps.LatLng(36.4295023415802, 128.067007021683);
-    var mapContainer = document.querySelector('#' + sectionId + ' .map');
-    var map = new kakao.maps.Map(mapContainer, options); // options는 지도 생성에 필요한 기본 옵션
-    map.setCenter(moveLatLon);
-    map.setLevel(13);
+    var map = maps[sectionId];
+    if (map) {
+        map.setCenter(moveLatLon);
+    }
 }
 
 
