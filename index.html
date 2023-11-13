@@ -157,12 +157,16 @@ function openSection(evt, sectionName) {
 // 페이지 로드 시 첫 번째 탭 활성화
 document.getElementsByClassName("tablinks")[0].click();
 	    
-// 교통정보 표시 여부를 추적하는 변수
-var trafficLayerOn = false;
+// 지도 객체 생성 시, 각 섹션별로 지도 객체에 trafficLayerOn 속성을 추가합니다.
+var mapSection1 = new kakao.maps.Map(document.getElementById('mapSection1'), {/* ... */});
+mapSection1.trafficLayerOn = true;  // 교통정보 표시 초기 상태 설정
 
-// 지도에 교통정보를 표시하도록 지도타입을 추가합니다
-map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-trafficLayerOn = true; // 초기 상태는 교통정보가 표시되도록 설정
+var mapSection2 = new kakao.maps.Map(document.getElementById('mapSection2'), {/* ... */});
+mapSection2.trafficLayerOn = true;  // 교통정보 표시 초기 상태 설정
+
+maps['Section1'] = mapSection1;
+maps['Section2'] = mapSection2;
+
 
 // 교통정보 표시를 토글하는 함수
 function toggleTraffic(sectionId) {
