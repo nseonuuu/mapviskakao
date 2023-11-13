@@ -143,14 +143,14 @@ function openSection(evt, sectionName) {
     // 이벤트가 발생한 탭을 활성화
     evt.currentTarget.className += " active-tab";
 
-    // Section2가 활성화될 때 지도 초기화
-    if (sectionName === "Section2") {
-        var mapContainer = document.getElementById('Section2').querySelector('.map');
+    // Section1 또는 Section2 활성화 시 지도 객체 초기화
+    if (sectionName === "Section1" || sectionName === "Section2") {
+        var mapContainer = document.getElementById(sectionName).querySelector('.map');
         var map = new kakao.maps.Map(mapContainer, {
             center: new kakao.maps.LatLng(37.5665, 126.9780),
             level: 3
         });
-        maps['Section2'] = map; // 지도 객체 저장
+        maps[sectionName] = map; // 지도 객체 저장
     }
 }
 
